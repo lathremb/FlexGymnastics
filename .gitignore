@@ -3,5 +3,5 @@ dist/
 .astro/
 .vercel/
 .env
-.env*.local
+.env*
 .DS_Store
