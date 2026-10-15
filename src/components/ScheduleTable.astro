@@ -1,0 +1,206 @@
+---
+// Filterable class schedule driven by src/data/classes.json.
+import Icon from './Icon.astro';
+import {
+  getClasses, programs as programMeta, DAYS, DAY_NAMES, fmtRange, statusInfo, actionHref, scheduleUpdated,
+} from '../lib/schedule';
+import { site } from '../data/site';
+
+interface Props {
+  id?: string;
+  programs?: string[];
+  levels?: string[];
+  heading?: string;
+  liveLink?: { href: string; label: string };
+}
+const { id = 'schedule', programs, levels, heading, liveLink = { href: site.links.gymSchedule, label: 'View the live schedule' } } = Astro.props;
+
+const rows = getClasses({ programs, levels });
+const days = DAYS.filter((d) => rows.some((r) => r.day === d));
+const progKeys = [...new Set(rows.map((r) => r.program))];
+const showProgram = progKeys.length > 1;
+const maxAge = Math.min(14, Math.ceil(Math.max(...rows.map((r) => r.ageMax))));
+const minAge = Math.floor(Math.min(...rows.map((r) => r.ageMin)));
+const ages = Array.from({ length: maxAge - minAge + 1 }, (_, i) => minAge + i);
+const updated = new Date(scheduleUpdated + 'T12:00:00').toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+---
+<div class="schedule" data-schedule id={id}>
+  {heading && <h3 class="schedule__heading">{heading}</h3>}
+
+  <form class="schedule__filters" aria-label="Filter classes" onsubmit="return false">
+    {showProgram && (
+      <label>
+        <span>Program</span>
+        <select name="program">
+          <option value="">All programs</option>
+          {progKeys.map((p) => <option value={p}>{programMeta[p]?.name ?? p}</option>)}
+        </select>
+      </label>
+    )}
+    <label>
+      <span>Day</span>
+      <select name="day">
+        <option value="">Any day</option>
+        {days.map((d) => <option value={d}>{DAY_NAMES[d]}</option>)}
+      </select>
+    </label>
+    <label>
+      <span>Child's age</span>
+      <select name="age">
+        <option value="">Any age</option>
+        {ages.map((a) => <option value={a}>{a} {a === 1 ? 'year' : 'years'}</option>)}
+      </select>
+    </label>
+    <label class="schedule__check">
+      <input type="checkbox" name="open" />
+      <span>Open classes only</span>
+    </label>
+  </form>
+
+  <p class="schedule__count" aria-live="polite" data-count>{rows.length} classes</p>
+
+  <div class="schedule__table-wrap">
+    <table class="schedule__table">
+      <caption class="sr-only">Class schedule{heading ? `: ${heading}` : ''}</caption>
+      <thead>
+        <tr>
+          <th scope="col">Day</th>
+          <th scope="col">Time</th>
+          <th scope="col">Class</th>
+          <th scope="col">Ages</th>
+          <th scope="col">Tuition</th>
+          <th scope="col">Status</th>
+          <th scope="col"><span class="sr-only">Action</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        {rows.map((c) => (
+          <tr
+            data-row
+            data-program={c.program}
+            data-day={c.day}
+            data-agemin={c.ageMin}
+            data-agemax={c.ageMax}
+            data-status={c.status}
+          >
+            <td data-label="Day"><strong>{DAY_NAMES[c.day]}</strong></td>
+            <td data-label="Time" class="schedule__time">{fmtRange(c)}</td>
+            <td data-label="Class">
+              <span class="schedule__class">
+                {showProgram && programMeta[c.program] && c.level !== programMeta[c.program].name ? `${programMeta[c.program].name} · ` : ''}{c.level}
+                {c.code && <span class="schedule__code">{c.code}</span>}
+              </span>
+              {c.note && <span class="schedule__note">{c.note}</span>}
+            </td>
+            <td data-label="Ages">{c.ages}</td>
+            <td data-label="Tuition"><strong>${c.tuition}</strong>/mo</td>
+            <td data-label="Status"><span class={`badge badge--${c.status}`}>{statusInfo[c.status].label}</span></td>
+            <td class="schedule__action">
+              {statusInfo[c.status].action && (
+                <a
+                  class:list={['btn', 'btn--sm', c.status === 'open' ? 'btn--primary' : 'btn--outline']}
+                  href={actionHref(c)}
+                  aria-label={`${statusInfo[c.status].action}: ${c.level}, ${DAY_NAMES[c.day]} ${fmtRange(c)}`}
+                >{statusInfo[c.status].action}</a>
+              )}
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+    <p class="schedule__empty" data-empty hidden>
+      No classes match those filters. Try another day, or <a href={`sms:${site.phones.text.tel}`}>text us at {site.phones.text.label}</a> to request a class time.
+    </p>
+  </div>
+
+  <p class="schedule__meta small muted">
+    <Icon name="clock" size={16} /> Schedule snapshot updated {updated}. Openings change often —
+    <a href={liveLink.href}>{liveLink.label}</a> or <a href={site.links.enroll}>check availability in Jackrabbit</a>.
+  </p>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-schedule]').forEach((root) => {
+    const form = root.querySelector('form')!;
+    const rows = [...root.querySelectorAll<HTMLTableRowElement>('[data-row]')];
+    const count = root.querySelector('[data-count]')!;
+    const empty = root.querySelector<HTMLElement>('[data-empty]')!;
+
+    const apply = () => {
+      const fd = new FormData(form);
+      const program = String(fd.get('program') ?? '');
+      const day = String(fd.get('day') ?? '');
+      const ageRaw = String(fd.get('age') ?? '');
+      const openOnly = fd.get('open') === 'on';
+      let shown = 0;
+      rows.forEach((r) => {
+        const d = r.dataset;
+        const age = ageRaw === '' ? null : Number(ageRaw);
+        const ok =
+          (!program || d.program === program) &&
+          (!day || d.day === day) &&
+          (age === null || (Number(d.agemin) < age + 1 && Number(d.agemax) >= age)) &&
+          (!openOnly || d.status === 'open');
+        r.hidden = !ok;
+        if (ok) shown++;
+      });
+      count.textContent = `${shown} ${shown === 1 ? 'class' : 'classes'}`;
+      empty.hidden = shown > 0;
+    };
+    form.addEventListener('change', apply);
+  });
+</script>
+
+<style>
+  .schedule__heading { text-transform: uppercase; }
+  .schedule__filters {
+    display: flex; flex-wrap: wrap; gap: 12px 16px; align-items: end; padding: 16px; margin-bottom: 12px;
+    background: var(--bg-soft); border-radius: var(--radius);
+  }
+  .schedule__filters label { display: grid; gap: 4px; font-size: var(--fs-xs); font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: var(--purple-700); flex: 1 1 160px; }
+  .schedule__filters select {
+    min-height: 46px; padding: 8px 36px 8px 14px; border-radius: 12px; border: 2px solid var(--line); background: #fff;
+    font: inherit; font-size: 1rem; text-transform: none; letter-spacing: 0; font-weight: 600; color: var(--ink);
+    appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%235f3090' stroke-width='3'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 12px center;
+  }
+  .schedule__filters select:focus-visible { border-color: var(--purple-600); }
+  .schedule__check { display: flex !important; align-items: center; gap: 10px !important; min-height: 46px; text-transform: none !important; letter-spacing: 0 !important; font-size: 1rem !important; color: var(--ink) !important; flex: 0 1 auto !important; }
+  .schedule__check input { width: 22px; height: 22px; accent-color: var(--purple-600); }
+  .schedule__count { font-weight: 800; font-size: var(--fs-sm); color: var(--ink-soft); margin: 0 0 8px; }
+
+  .schedule__table-wrap { border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; background: #fff; }
+  .schedule__table th { text-align: left; font-family: var(--font-display); font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: #fff; background: var(--purple-800); padding: 14px 16px; }
+  .schedule__table td { padding: 14px 16px; border-top: 1px solid var(--line); vertical-align: middle; }
+  .schedule__table tbody tr:nth-child(even) { background: #fcfbfe; }
+  .schedule__table tr[hidden] { display: none; }
+  .schedule__time { white-space: nowrap; font-weight: 700; }
+  .schedule__class { font-weight: 800; }
+  .schedule__code { margin-left: 8px; font-size: 0.72rem; padding: 2px 8px; border-radius: 6px; background: var(--purple-100); color: var(--purple-700); font-weight: 800; }
+  .schedule__note { display: block; font-size: var(--fs-xs); color: var(--ink-soft); }
+  .schedule__action { text-align: right; }
+  .schedule__empty { padding: 20px; margin: 0; }
+  .schedule__meta { display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; margin-top: 12px; }
+
+  /* Phones: rows become cards */
+  @media (max-width: 760px) {
+    .schedule__table-wrap { border: 0; background: none; overflow: visible; }
+    .schedule__table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+    .schedule__table, .schedule__table tbody { display: block; }
+    .schedule__table tr {
+      display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; padding: 16px; margin-bottom: 12px;
+      border: 1px solid var(--line); border-radius: var(--radius); background: #fff !important; box-shadow: var(--shadow);
+    }
+    .schedule__table td { display: block; padding: 0; border: 0; }
+    .schedule__table td[data-label='Day'] { grid-column: 1; font-size: 1.05rem; }
+    .schedule__table td[data-label='Status'] { grid-column: 2; grid-row: 1; justify-self: end; }
+    .schedule__table td[data-label='Time'] { grid-column: 1 / -1; font-size: 1.15rem; color: var(--purple-700); }
+    .schedule__table td[data-label='Class'] { grid-column: 1 / -1; }
+    .schedule__table td[data-label='Ages']::before { content: 'Ages '; color: var(--ink-soft); }
+    .schedule__table td[data-label='Ages'], .schedule__table td[data-label='Tuition'] { font-size: var(--fs-sm); }
+    .schedule__table td[data-label='Tuition'] { text-align: right; }
+    .schedule__action { grid-column: 1 / -1; text-align: left; margin-top: 8px; }
+    .schedule__action:empty { display: none; }
+    .schedule__action .btn { width: 100%; }
+  }
+</style>

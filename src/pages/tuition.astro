@@ -1,0 +1,124 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import ContactStrip from '../components/ContactStrip.astro';
+import { site, fees } from '../data/site';
+
+const prices = [
+  { program: 'Parent & Tot', detail: 'Ages 1–3 · 50 min', price: 124, href: '/parent-and-tots/' },
+  { program: 'Preschool', detail: 'Ages 3–5 · 50 min', price: 124, href: '/preschool-gymnastics/' },
+  { program: 'Kinder', detail: 'Ages 5–6 · 50 min', price: 124, href: '/preschool-gymnastics/#kinder' },
+  { program: "Lil' Ninja", detail: 'Ages 3–5 · 40 min', price: 124, href: '/ninjazone/#lil-ninja' },
+  { program: 'Girls Recreational', detail: 'Beginner – Intermediate · 60 min', price: 132, href: '/girls-classes/' },
+  { program: 'Girls Intermediate', detail: '90-minute classes', price: 198, href: '/girls-classes/#intermediate' },
+  { program: 'Boys Recreational', detail: 'Ages 6+ · 60 min', price: 132, href: '/boys-classes/' },
+  { program: 'NinjaZone', detail: 'Ages 6–14 · 50 min', price: 132, href: '/ninjazone/' },
+];
+---
+<BaseLayout
+  title="Tuition & Membership"
+  description="Flex Gymnastics AZ tuition and membership: monthly class tuition from $124, $50 annual membership, NinjaZone uniform, plus billing, cancellation and refund policies."
+>
+  <PageHero
+    eyebrow="Tuition & Memberships"
+    title="Simple"
+    accent="monthly tuition"
+    lead="Flex is a year-round program. Tuition is auto-billed monthly — see each class for its monthly tuition."
+  >
+    <a class="btn btn--primary" href={site.links.enroll}>Enroll Now</a>
+    <a class="btn btn--ghost" href={site.links.portal}>Parent Portal</a>
+  </PageHero>
+
+  <section class="section">
+    <div class="container">
+      <div class="split" style="align-items:start">
+        <div>
+          <div class="section-head">
+            <p class="eyebrow">Monthly tuition</p>
+            <h2 class="heading-xl">Class <strong>pricing</strong></h2>
+          </div>
+          <div class="price-table">
+            <table>
+              <caption class="sr-only">Monthly tuition by program</caption>
+              <thead>
+                <tr><th scope="col">Program</th><th scope="col">Monthly</th></tr>
+              </thead>
+              <tbody>
+                {prices.map((p) => (
+                  <tr>
+                    <th scope="row"><a href={p.href}>{p.program}</a><span>{p.detail}</span></th>
+                    <td><strong>${p.price}</strong>/mo</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="stack">
+          <div class="card card--dark fee">
+            <p class="eyebrow">Required</p>
+            <p class="fee__price">${fees.membership}<small>/year</small></p>
+            <h3>Full Membership ({fees.membershipYear})</h3>
+            <ul class="check-list">
+              <li>Required for all weekly classes and team programs</li>
+              <li>Provides one year of insurance for all gym activities: classes, teams, open gyms, camps, private lessons and special events</li>
+              <li>Auto-renews annually on <strong>August 1</strong>; expires <strong>July 31</strong></li>
+              <li>Prorated monthly for the remainder of the year</li>
+            </ul>
+          </div>
+          <div class="card card--lime fee">
+            <p class="fee__price">${fees.ninjaUniform}<small> one-time</small></p>
+            <h3>NinjaZone uniform</h3>
+            <p class="mb-0">Required for NinjaZone class participation.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--soft">
+    <div class="container container--narrow">
+      <div class="section-head">
+        <p class="eyebrow">Policies</p>
+        <h2 class="heading-xl">Billing &amp; <strong>cancellations</strong></h2>
+      </div>
+      <div class="grid grid-2">
+        <div class="card">
+          <h3>Monthly billing</h3>
+          <p class="mb-0">Tuition is auto-paid on the <strong>20th</strong> of the preceding month.</p>
+        </div>
+        <div class="card">
+          <h3>Suspend or cancel tuition</h3>
+          <p class="mb-0">Tuition may be suspended or cancelled <strong>in writing on or before the 19th</strong> of each month. Text/email <a href={`sms:${site.phones.text.tel}`}>{site.phones.text.label}</a> or <a href={`mailto:${site.email}`}>{site.email}</a>.</p>
+        </div>
+        <div class="card">
+          <h3>Cancel membership</h3>
+          <p class="mb-0">Memberships may be cancelled <strong>in writing on or before July 19</strong>.</p>
+        </div>
+        <div class="card">
+          <h3>Refunds</h3>
+          <p class="mb-0">Tuition and memberships are <strong>non-refundable</strong>.</p>
+        </div>
+      </div>
+      <div style="margin-top:32px"><ContactStrip /></div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .price-table { border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); }
+  .price-table thead th { background: var(--purple-800); color: #fff; text-align: left; padding: 14px 20px; font-family: var(--font-display); font-size: .75rem; letter-spacing: .12em; text-transform: uppercase; }
+  .price-table thead th:last-child { text-align: right; }
+  .price-table tbody th, .price-table tbody td { padding: 16px 20px; border-top: 1px solid var(--line); text-align: left; }
+  .price-table tbody th a { display: block; font-family: var(--font-display); font-weight: 800; font-size: 1.1rem; color: var(--ink); text-decoration: none; }
+  .price-table tbody th a:hover { color: var(--purple-600); }
+  .price-table tbody th span { display: block; font-weight: 400; font-size: var(--fs-sm); color: var(--ink-soft); }
+  .price-table td { text-align: right !important; white-space: nowrap; }
+  .price-table td strong { font-family: var(--font-display); font-size: 1.5rem; color: var(--purple-600); }
+  .fee__price { font-family: var(--font-display); font-weight: 800; font-size: 3rem; line-height: 1; margin-bottom: 8px; color: var(--purple-600); }
+  .fee__price small { font-size: 1rem; font-weight: 700; }
+  .card--dark .fee__price { color: var(--lime-400); }
+  .card--dark h3 { color: #fff; }
+  .card--dark .check-list li { color: rgb(255 255 255 / 88%); }
+</style>

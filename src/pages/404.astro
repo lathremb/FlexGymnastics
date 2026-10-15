@@ -1,0 +1,11 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+---
+<BaseLayout title="Page Not Found" description="Sorry, that page couldn't be found at Flex Gymnastics AZ.">
+  <PageHero eyebrow="404" title="Oops —" accent="missed the landing" lead="That page doesn’t exist (or it moved in our redesign). Try one of these instead.">
+    <a class="btn btn--primary" href="/">Home</a>
+    <a class="btn btn--ghost" href="/classes/">Classes</a>
+    <a class="btn btn--ghost" href="/contact/">Contact</a>
+  </PageHero>
+</BaseLayout>

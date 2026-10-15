@@ -1,0 +1,206 @@
+---
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import { nav } from '../data/nav';
+import { site } from '../data/site';
+
+const path = Astro.url.pathname.replace(/\/?$/, '/');
+const isActive = (href: string) =>
+  href === '/' ? path === '/' : path.startsWith(href.split('#')[0]);
+---
+<div class="utility">
+  <div class="container utility__inner">
+    <a class="utility__hiring" href={site.links.jobs}>
+      <span class="badge badge--plain">We're Hiring!</span>
+      <span class="utility__hiring-text">Click here to apply</span>
+    </a>
+    <ul class="utility__contact" role="list">
+      <li><a href={`tel:${site.phones.main.tel}`}><Icon name="phone" size={15} /> {site.phones.main.label}</a></li>
+      <li class="hide-sm"><a href={`tel:${site.phones.flex.tel}`}>{site.phones.flex.label}</a></li>
+      <li><a href={`sms:${site.phones.text.tel}`}><Icon name="sms" size={15} /> Text {site.phones.text.label}</a></li>
+      <li class="utility__social">
+        <a href={site.social.facebook} aria-label="Flex Gymnastics on Facebook"><Icon name="facebook" size={16} /></a>
+        <a href={site.social.instagram} aria-label="Flex Gymnastics on Instagram"><Icon name="instagram" size={16} /></a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<header class="site-header" data-header>
+  <div class="container site-header__inner">
+    <Logo />
+
+    <nav class="desktop-nav" aria-label="Main">
+      <ul role="list">
+        {nav.map((item, i) => (
+          <li class:list={['nav-item', { 'has-menu': item.children }]}>
+            <a href={item.href} class="nav-link" aria-current={isActive(item.href) ? 'page' : undefined}>{item.label}</a>
+            {item.children && (
+              <>
+                <button class="nav-toggle" aria-expanded="false" aria-controls={`menu-${i}`}>
+                  <span class="sr-only">{item.label} submenu</span>
+                  <Icon name="chevron" size={16} />
+                </button>
+                <div class="dropdown" id={`menu-${i}`}>
+                  <ul role="list">
+                    {item.children.map((c) => (
+                      <li>
+                        <a href={c.href}>
+                          <span class="dropdown__label">{c.label}</span>
+                          {c.desc && <span class="dropdown__desc">{c.desc}</span>}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </>
+            )}
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <div class="site-header__actions">
+      <a class="btn btn--primary site-header__enroll" href={site.links.enroll}>Enroll Now</a>
+      <button class="menu-button" aria-expanded="false" aria-controls="mobile-nav" data-menu-button>
+        <span class="icon-open"><Icon name="menu" size={26} /></span>
+        <span class="icon-close"><Icon name="close" size={26} /></span>
+        <span class="sr-only">Menu</span>
+      </button>
+    </div>
+  </div>
+
+  <nav class="mobile-nav" id="mobile-nav" aria-label="Mobile" hidden>
+    <div class="container">
+      <ul role="list" class="mobile-nav__list">
+        {nav.map((item) => (
+          <li>
+            <a href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}>{item.label}</a>
+            {item.children && (
+              <ul role="list" class="mobile-nav__sub">
+                {item.children.map((c) => <li><a href={c.href}>{c.label}</a></li>)}
+              </ul>
+            )}
+          </li>
+        ))}
+      </ul>
+      <div class="btn-row mobile-nav__ctas">
+        <a class="btn btn--primary" href={site.links.enroll}>Enroll Now</a>
+        <a class="btn btn--outline" href={site.links.portal}>Parent Portal</a>
+      </div>
+      <p class="small muted">{site.gymHoursNote}</p>
+    </div>
+  </nav>
+</header>
+
+<script>
+  const header = document.querySelector<HTMLElement>('[data-header]');
+  const menuBtn = document.querySelector<HTMLButtonElement>('[data-menu-button]');
+  const mobileNav = document.getElementById('mobile-nav');
+
+  menuBtn?.addEventListener('click', () => {
+    const open = menuBtn.getAttribute('aria-expanded') === 'true';
+    menuBtn.setAttribute('aria-expanded', String(!open));
+    if (mobileNav) mobileNav.hidden = open;
+    document.documentElement.classList.toggle('nav-open', !open);
+  });
+
+  // Desktop dropdown toggles (hover + focus handled in CSS; this adds click/keyboard support)
+  const toggles = document.querySelectorAll<HTMLButtonElement>('.nav-toggle');
+  const closeAll = (except?: HTMLButtonElement) =>
+    toggles.forEach((t) => t !== except && t.setAttribute('aria-expanded', 'false'));
+  toggles.forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const open = btn.getAttribute('aria-expanded') === 'true';
+      closeAll(btn);
+      btn.setAttribute('aria-expanded', String(!open));
+    });
+  });
+  document.addEventListener('click', () => closeAll());
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    const openToggle = [...toggles].find((t) => t.getAttribute('aria-expanded') === 'true');
+    closeAll();
+    openToggle?.focus();
+    if (menuBtn?.getAttribute('aria-expanded') === 'true') menuBtn.click();
+  });
+
+  const onScroll = () => header?.classList.toggle('is-scrolled', window.scrollY > 8);
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+</script>
+
+<style>
+  /* Utility bar */
+  .utility { background: var(--purple-950); color: #fff; font-size: var(--fs-xs); }
+  .utility__inner { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 40px; }
+  .utility a { color: #fff; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
+  .utility a:hover { color: var(--lime-300); }
+  .utility__hiring .badge { background: var(--lime-400); color: var(--purple-950); }
+  .utility__hiring-text { text-decoration: underline; text-underline-offset: 3px; }
+  .utility__contact { display: flex; align-items: center; gap: 18px; list-style: none; margin: 0; padding: 0; font-weight: 700; }
+  .utility__social { display: flex; gap: 12px; }
+  @media (max-width: 899px) {
+    .hide-sm, .utility__hiring-text { display: none; }
+    .utility__contact { gap: 14px; }
+  }
+  @media (max-width: 420px) { .utility__social { display: none; } }
+
+  /* Main header */
+  .site-header { position: sticky; top: 0; z-index: 100; background: #fff; border-bottom: 1px solid transparent; transition: box-shadow .2s ease, border-color .2s ease; }
+  .site-header.is-scrolled { box-shadow: 0 6px 24px rgb(30 12 56 / 10%); border-color: var(--line); }
+  .site-header__inner { display: flex; align-items: center; justify-content: space-between; gap: 20px; min-height: var(--header-h); }
+  .site-header__actions { display: flex; align-items: center; gap: 10px; }
+
+  .desktop-nav { display: none; }
+  .desktop-nav > ul { display: flex; align-items: center; gap: 2px; list-style: none; margin: 0; padding: 0; }
+  .nav-item { position: relative; display: flex; align-items: center; }
+  .nav-link {
+    display: block; padding: 10px 10px; text-decoration: none; color: var(--ink);
+    font-family: var(--font-display); font-weight: 600; font-size: 0.92rem; letter-spacing: 0.04em; text-transform: uppercase;
+    border-radius: 8px;
+  }
+  .nav-link:hover, .nav-link[aria-current='page'] { color: var(--purple-600); }
+  .nav-link[aria-current='page'] { box-shadow: inset 0 -3px 0 var(--lime-400); border-radius: 0; }
+  .has-menu .nav-link { padding-right: 2px; }
+  .nav-toggle { background: none; border: 0; padding: 6px 4px; color: var(--ink); cursor: pointer; border-radius: 6px; }
+  .nav-toggle svg { transition: transform .15s ease; }
+  .nav-toggle[aria-expanded='true'] svg { transform: rotate(180deg); }
+
+  .dropdown {
+    position: absolute; top: calc(100% + 6px); left: -12px; min-width: 300px;
+    background: #fff; border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow-lg);
+    padding: 10px; opacity: 0; visibility: hidden; transform: translateY(6px); transition: all .15s ease;
+  }
+  .dropdown::before { content: ''; position: absolute; inset: -12px 0 auto; height: 12px; }
+  .dropdown ul { list-style: none; margin: 0; padding: 0; }
+  .dropdown a { display: block; padding: 10px 14px; border-radius: 12px; text-decoration: none; color: var(--ink); }
+  .dropdown a:hover, .dropdown a:focus-visible { background: var(--purple-50); }
+  .dropdown__label { display: block; font-weight: 800; font-family: var(--font-display); }
+  .dropdown__desc { display: block; font-size: var(--fs-xs); color: var(--ink-soft); }
+  .has-menu:hover .dropdown,
+  .has-menu:focus-within .dropdown,
+  .nav-toggle[aria-expanded='true'] + .dropdown { opacity: 1; visibility: visible; transform: none; }
+
+  .menu-button { display: inline-flex; background: var(--purple-50); color: var(--purple-700); border: 0; width: 48px; height: 48px; border-radius: 12px; align-items: center; justify-content: center; cursor: pointer; }
+  .menu-button .icon-close { display: none; }
+  .menu-button[aria-expanded='true'] .icon-close { display: inline; }
+  .menu-button[aria-expanded='true'] .icon-open { display: none; }
+
+  .mobile-nav { border-top: 1px solid var(--line); max-height: calc(100vh - var(--header-h)); overflow-y: auto; padding-block: 12px 28px; background: #fff; }
+  .mobile-nav__list { list-style: none; margin: 0 0 20px; padding: 0; }
+  .mobile-nav__list > li { border-bottom: 1px solid var(--line); }
+  .mobile-nav__list > li > a { display: block; padding: 14px 0; font-family: var(--font-display); font-weight: 700; font-size: 1.15rem; text-transform: uppercase; letter-spacing: 0.03em; color: var(--ink); text-decoration: none; }
+  .mobile-nav__list a[aria-current='page'] { color: var(--purple-600); }
+  .mobile-nav__sub { list-style: none; margin: -4px 0 12px; padding: 0 0 0 14px; border-left: 3px solid var(--lime-400); }
+  .mobile-nav__sub a { display: block; padding: 8px 0; color: var(--ink-soft); text-decoration: none; font-weight: 700; }
+  .mobile-nav__ctas { margin-bottom: 12px; }
+  .mobile-nav__ctas .btn { flex: 1 1 160px; }
+
+  @media (max-width: 479px) { .site-header__enroll { display: none; } }
+  @media (min-width: 1180px) {
+    .desktop-nav { display: block; }
+    .menu-button, .mobile-nav { display: none !important; }
+  }
+</style>

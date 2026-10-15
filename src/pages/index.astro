@@ -1,0 +1,287 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Photo from '../components/Photo.astro';
+import ProgramCard from '../components/ProgramCard.astro';
+import Icon from '../components/Icon.astro';
+import Faq from '../components/Faq.astro';
+import Marquee from '../components/Marquee.astro';
+import OwnerNote from '../components/OwnerNote.astro';
+import { site, closures } from '../data/site';
+import { faqs } from '../data/faq';
+
+const quickLinks = [
+  { label: 'Classes', href: '/classes/', icon: 'calendar' },
+  { label: 'Job Opportunities', href: site.links.jobs, icon: 'briefcase' },
+  { label: 'Enroll Online (Parent Portal)', href: site.links.portal, icon: 'login' },
+  { label: "FAQ's", href: '/faq/', icon: 'help' },
+  { label: 'Coaches FlexU', href: site.links.flexU, icon: 'book' },
+] as const;
+---
+<BaseLayout
+  title="Flex Gymnastics AZ | Gymnastics & NinjaZone Classes in Oro Valley, AZ"
+  description="Recreational and competitive gymnastics and NinjaZone classes for girls & boys ages 12 months and up in Oro Valley, AZ. Open enrollment year-round — enroll online today."
+  bareTitle
+>
+  <!-- HERO -->
+  <section class="home-hero hero">
+    <div class="container home-hero__inner">
+      <div class="home-hero__copy">
+        <p class="eyebrow">Welcome to Flex Gymnastics AZ</p>
+        <h1 class="display">Begin here.<br /><strong>Go anywhere.</strong></h1>
+        <p class="lead">Recreational and Competitive Gymnastics for Girls &amp; Boys Ages 12 Months and Up!</p>
+        <div class="btn-row">
+          <a class="btn btn--primary" href={site.links.enroll}>Enroll Now <Icon name="arrow" /></a>
+          <a class="btn btn--ghost" href="/classes/">Find a Class</a>
+        </div>
+        <ul class="home-hero__stats" role="list">
+          {site.stats.map((s) => (
+            <li><strong>{s.value}</strong><span>{s.label}</span></li>
+          ))}
+        </ul>
+      </div>
+      <div class="home-hero__media">
+        <div class="mosaic">
+          <Photo src="/images/team-medals-banner.webp" alt="Flex gymnasts wearing medals in front of the FLEX Gymnastics banner" ratio="1/1" eager />
+          <Photo src="/images/team-glam-rock-trophy.webp" alt="Flex team gymnasts smiling with a team trophy in the gym" ratio="1/1" eager />
+          <Photo src="/images/team-pyramid.webp" alt="Flex gymnasts posing together in a heart pyramid on the gym floor" ratio="1/1" eager />
+          <Photo src="/images/team-group-meet.webp" alt="The Flex girls team together at a gymnastics meet" ratio="1/1" eager />
+        </div>
+        <a class="home-hero__badge" href="#open-enrollment">
+          <span>Open Enrollment</span>
+          Join year-round classes at <em>any</em> time
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCHEDULE CTAs -->
+  <section class="section--tight schedule-ctas">
+    <div class="container grid grid-2">
+      <a class="sched-cta" href="/classes/#schedule">
+        <span class="sched-cta__icon"><Icon name="calendar" size={28} /></span>
+        <span>
+          <span class="sched-cta__title">Gymnastics Classes</span>
+          <span class="sched-cta__sub">Schedule Available Now</span>
+        </span>
+        <Icon name="arrow" size={24} class="sched-cta__arrow" />
+      </a>
+      <a class="sched-cta sched-cta--ninja" href="/ninjazone/#schedule">
+        <span class="sched-cta__icon"><Icon name="spark" size={28} /></span>
+        <span>
+          <span class="sched-cta__title">Ninja Zone</span>
+          <span class="sched-cta__sub">Schedule Available Now</span>
+        </span>
+        <Icon name="arrow" size={24} class="sched-cta__arrow" />
+      </a>
+    </div>
+  </section>
+
+  <!-- PROGRAMS -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Programs</p>
+        <h2 class="heading-xl">Whatever comes next, <strong>start at Flex</strong></h2>
+        <p class="lead">Beginners to advanced instruction for girls &amp; boys — from first steps with a grown-up to the competitive team.</p>
+      </div>
+      <div class="grid grid-4">
+        <ProgramCard title="Girls & Boys Gymnastics" ages="12 mos +" href="/classes/" cta="View Gymnastics Classes" photoAlt="Gymnast on the balance beam during a recreational class">
+          <p>Our recreational classes introduce and develop gymnastics skills, balance, strength, coordination and flexibility in a fun, active way! Beginners to Advanced instruction is available for girls &amp; boys!</p>
+        </ProgramCard>
+        <ProgramCard title="Ninja Zone" ages="3–13" href="/ninjazone/" cta="View Ninja Classes" photoAlt="Kids running the NinjaZone obstacle course" tone="lime">
+          <p>NinjaZone combines obstacle training, gymnastics, martial arts and freestyle movement with the freedom for kids to progress and learn at their own pace. We offer Ninja Night events and classes!</p>
+        </ProgramCard>
+        <ProgramCard title="Tots, Preschool & Kinder" ages="1–6" href="/preschool-gymnastics/" cta="See little-kid classes" photoAlt="Preschoolers balancing on a floor-level beam" tone="lavender">
+          <p>Parent &amp; Tot, Preschool and Kinder classes on tot-sized equipment build strength, balance, confidence and school-readiness skills.</p>
+        </ProgramCard>
+        <ProgramCard title="Teams" ages="3 +" href="/teams/" cta="Explore teams" photoSrc="/images/team-medals-banner-2.webp" photoAlt="Flex team gymnasts showing their medals in front of the FLEX banner">
+          <p>Invitation-based Team Development and USA Gymnastics DP &amp; XCEL competitive teams for girls, plus a boys competitive program.</p>
+        </ProgramCard>
+      </div>
+    </div>
+  </section>
+
+  <!-- OPEN ENROLLMENT -->
+  <section class="open-enroll" id="open-enrollment">
+    <div class="container open-enroll__inner">
+      <div>
+        <p class="eyebrow">Open Enrollment</p>
+        <h2 class="heading-xl">Join year-round classes <strong>at any time.</strong></h2>
+        <p class="lead">Our curriculum is continuous, so there’s no waiting for a new session — pick a class, enroll online and come play.</p>
+      </div>
+      <div class="btn-row">
+        <a class="btn btn--primary" href={site.links.enroll}>Enroll Now</a>
+        <a class="btn btn--ghost" href="/tuition/">Tuition &amp; Membership</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="section">
+    <div class="container split">
+      <div class="about-photos">
+        <Photo src="/images/team-trophy-gym.webp" alt="Flex gymnasts holding a trophy inside the Oro Valley gym" ratio="3/4" />
+        <Photo src="/images/team-glam-rock-five.webp" alt="Five Flex gymnasts in team leotards in the gym" ratio="1/1" />
+        <Photo alt="Wide view of the 18,000+ square foot Flex Gymnastics facility" ratio="1/1" tone="lime" />
+      </div>
+      <div>
+        <p class="eyebrow">About Flex Gymnastics</p>
+        <h2 class="heading-xl">Locally owned for <strong>45+ years</strong></h2>
+        <p>Flex Gymnastics AZ offers recreational programs, team preparation, girls &amp; boys USA Gymnastics Development Programs, Xcel competitive teams, and Ninja Zone™ for girls and boys ages 12 months and up.</p>
+        <p>With a low coach-to-gymnast ratio, our students achieve their best. We have programs for all ages and skill levels — whether your child loves gymnastics through our recreational programs or seeks the challenge of competition on our teams.</p>
+        <p><strong>Come visit our upgraded 18,000+ square foot expanded facility and see what the fun is all about!</strong></p>
+        <div class="btn-row">
+          <a class="btn btn--secondary" href="/about-us/">Our Story</a>
+          <a class="btn btn--outline" href={site.address.mapUrl}>Get Directions</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Marquee />
+
+  <!-- QUICK LINKS + NEWS -->
+  <section class="section section--soft">
+    <div class="container split split--wide-left news">
+      <div>
+        <p class="eyebrow">Quick Notes &amp; News</p>
+        <h2 class="heading-xl">Right now <strong>at Flex</strong></h2>
+        <div class="card card--lime news__enroll">
+          <h3>Class Enrollment ANY time!</h3>
+          <p class="mb-0">Year-round classes with Open Enrollment!</p>
+        </div>
+        <div class="card">
+          <h3>Gym Closures</h3>
+          <OwnerNote>These are the {closures.year} closure dates from the current website. Please confirm/update them (edit <code>src/data/site.ts</code>).</OwnerNote>
+          <ul class="closures" role="list">
+            {closures.items.map((c) => (
+              <li><span>{c.name}</span><strong>{c.dates}</strong></li>
+            ))}
+          </ul>
+          {closures.notes.map((n) => <p class="small muted mb-0">{n}</p>)}
+          <p class="mt-0"><a class="link-arrow" href="/annual-calendar/">Annual calendar</a></p>
+        </div>
+      </div>
+      <div>
+        <h3 class="quick__title">Quick links</h3>
+        <ul class="quick" role="list">
+          {quickLinks.map((q) => (
+            <li>
+              <a href={q.href}>
+                <span class="quick__icon"><Icon name={q.icon} /></span>
+                <span>{q.label}</span>
+                <Icon name="arrow" size={18} class="quick__arrow" />
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ PREVIEW -->
+  <section class="section">
+    <div class="container split split--wide-left faq-preview">
+      <div>
+        <p class="eyebrow">Have a question?</p>
+        <h2 class="heading-xl">Questions we <strong>usually get</strong></h2>
+        <a class="btn btn--outline" href="/faq/">View all FAQs</a>
+      </div>
+      <Faq items={faqs.slice(0, 4)} />
+    </div>
+  </section>
+
+  <!-- HIRING -->
+  <section class="section--tight">
+    <div class="container">
+      <a class="hiring" href={site.links.jobs}>
+        <div>
+          <p class="eyebrow">Join the team</p>
+          <h2 class="heading-xl">We Are <strong>Hiring!</strong></h2>
+          <p class="lead">Love gymnastics and working with kids? Apply online today.</p>
+          <span class="btn btn--primary">Apply Now <Icon name="arrow" /></span>
+        </div>
+        <Photo alt="Flex coaches on the gym floor" ratio="16/10" tone="lime" />
+      </a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .home-hero {
+    color: #fff; overflow: hidden; padding-block: clamp(48px, 7vw, 96px) clamp(56px, 8vw, 110px);
+    background:
+      radial-gradient(1000px 600px at 85% 10%, rgb(143 98 196 / 55%), transparent 60%),
+      radial-gradient(800px 500px at 0% 100%, rgb(146 208 80 / 16%), transparent 60%),
+      var(--purple-900);
+  }
+  .home-hero__inner { display: grid; gap: 48px; align-items: center; }
+  @media (min-width: 960px) { .home-hero__inner { grid-template-columns: 1.15fr 0.85fr; } }
+  .home-hero .display { color: #fff; }
+  .home-hero .lead { color: rgb(255 255 255 / 88%); font-size: clamp(1.15rem, 1rem + .6vw, 1.45rem); margin-bottom: 28px; }
+  .home-hero__stats { display: flex; flex-wrap: wrap; gap: 14px 36px; list-style: none; padding: 28px 0 0; margin: 36px 0 0; border-top: 1px solid rgb(255 255 255 / 16%); }
+  .home-hero__stats strong { display: block; font-family: var(--font-display); font-size: clamp(1.8rem, 1.4rem + 1.4vw, 2.6rem); font-weight: 800; color: var(--lime-400); line-height: 1; }
+  .home-hero__stats span { font-size: var(--fs-sm); color: rgb(255 255 255 / 78%); }
+  .home-hero__media { position: relative; }
+  .mosaic { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; max-width: 520px; margin-left: auto; }
+  .mosaic > :global(:nth-child(odd)) { transform: translateY(18px); }
+  .mosaic :global(.photo) { border-radius: var(--radius); box-shadow: 0 12px 30px rgb(0 0 0 / 30%); }
+  .home-hero__badge {
+    display: block; width: fit-content; max-width: 520px; margin: 44px 0 0 auto; padding: 16px 20px; border-radius: var(--radius);
+    background: #fff; color: var(--ink); box-shadow: var(--shadow-lg); text-decoration: none; font-weight: 700; line-height: 1.35;
+  }
+  .home-hero__badge span { display: block; font-family: var(--font-display); text-transform: uppercase; letter-spacing: .12em; font-size: .72rem; color: var(--purple-600); margin-bottom: 4px; }
+  .home-hero__badge:hover { color: var(--ink); transform: translateY(-2px); }
+  @media (max-width: 959px) { .mosaic { margin-inline: auto; } .home-hero__badge { margin-inline: auto; } }
+
+  .schedule-ctas { margin-top: calc(var(--section) * -0.45); position: relative; padding-top: 0; }
+  .sched-cta {
+    display: grid; grid-template-columns: auto 1fr auto; gap: 18px; align-items: center; padding: 24px 28px;
+    background: #fff; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); text-decoration: none; color: var(--ink);
+    border: 2px solid transparent; transition: border-color .15s ease, transform .15s ease;
+  }
+  .sched-cta:hover { border-color: var(--lime-400); transform: translateY(-3px); color: var(--ink); }
+  .sched-cta__icon { display: grid; place-items: center; width: 60px; height: 60px; border-radius: 18px; background: var(--purple-600); color: #fff; }
+  .sched-cta--ninja .sched-cta__icon { background: var(--lime-400); color: var(--purple-950); }
+  .sched-cta__title { display: block; font-family: var(--font-display); font-weight: 800; font-size: 1.35rem; text-transform: uppercase; }
+  .sched-cta__sub { display: block; color: var(--purple-600); font-weight: 800; }
+  .sched-cta :global(.sched-cta__arrow) { color: var(--purple-600); }
+
+  .open-enroll { background: var(--purple-600); color: #fff; padding-block: clamp(44px, 6vw, 72px); }
+  .open-enroll__inner { display: flex; flex-wrap: wrap; gap: 28px; align-items: center; justify-content: space-between; }
+  .open-enroll .eyebrow { color: var(--lime-300); }
+  .open-enroll .heading-xl { color: #fff; margin-bottom: 12px; }
+  .open-enroll .heading-xl strong { color: var(--lime-400); }
+  .open-enroll .lead { color: rgb(255 255 255 / 88%); margin: 0; }
+
+  .about-photos { display: grid; grid-template-columns: 1.1fr 1fr; gap: 16px; }
+  .about-photos > :global(:first-child) { grid-row: span 2; height: 100%; aspect-ratio: auto !important; }
+
+  .news .heading-xl { margin-bottom: 24px; }
+  .news__enroll { margin-bottom: 16px; }
+  .closures { list-style: none; padding: 0; margin: 0 0 16px; display: grid; }
+  .closures li { display: flex; justify-content: space-between; gap: 16px; padding: 10px 0; border-bottom: 1px dashed var(--line); }
+  .closures strong { text-align: right; color: var(--purple-700); }
+  .quick__title { text-transform: uppercase; font-size: 1rem; letter-spacing: .14em; color: var(--purple-600); }
+  .quick { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+  .quick a {
+    display: grid; grid-template-columns: auto 1fr auto; gap: 14px; align-items: center; padding: 14px 18px; border-radius: var(--radius);
+    background: #fff; border: 1px solid var(--line); text-decoration: none; color: var(--ink); font-weight: 800; min-height: 64px;
+  }
+  .quick a:hover { border-color: var(--purple-600); color: var(--purple-700); }
+  .quick__icon { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 12px; background: var(--purple-50); color: var(--purple-600); }
+  .quick :global(.quick__arrow) { color: var(--purple-400); }
+
+  .faq-preview { align-items: start; }
+
+  .hiring {
+    display: grid; gap: 32px; align-items: center; padding: clamp(28px, 4vw, 56px); border-radius: var(--radius-lg);
+    background: var(--purple-900); color: #fff; text-decoration: none;
+  }
+  @media (min-width: 900px) { .hiring { grid-template-columns: 1fr 1fr; } }
+  .hiring:hover { color: #fff; }
+  .hiring .eyebrow { color: var(--lime-300); }
+  .hiring .heading-xl { color: #fff; }
+  .hiring .heading-xl strong { color: var(--lime-400); }
+  .hiring .lead { color: rgb(255 255 255 / 86%); }
+</style>

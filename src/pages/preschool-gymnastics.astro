@@ -1,0 +1,91 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import Photo from '../components/Photo.astro';
+import RegistrationBanner from '../components/RegistrationBanner.astro';
+import ScheduleTable from '../components/ScheduleTable.astro';
+import ContactStrip from '../components/ContactStrip.astro';
+import AgeLinks from '../components/AgeLinks.astro';
+import { site, fees } from '../data/site';
+---
+<BaseLayout
+  title="Preschool (Ages 3–5) & Kinder (Ages 5–6) Gymnastics"
+  description="Preschool and Kinder gymnastics classes in Oro Valley, AZ. 50-minute classes mornings, afternoons, evenings and Saturdays build strength, balance, confidence and school-readiness. $124/month."
+>
+  <PageHero
+    eyebrow="Ages 3–6"
+    title="Preschool"
+    accent="& Kinder"
+    lead="Kids exercise their brains and their bodies — building strength, flexibility, balance, confidence and the skills that help them succeed in school."
+    chips={['50-minute classes', 'Mornings, afternoons, evenings & Saturdays', '$124 / month']}
+    photoAlt="Preschool gymnasts lined up on mini springboards"
+  >
+    <a class="btn btn--primary" href="#preschool">Preschool 3–5</a>
+    <a class="btn btn--ghost" href="#kinder">Kinder 5–6</a>
+  </PageHero>
+
+  <section class="section">
+    <div class="container split">
+      <div class="prose">
+        <p class="eyebrow">Why gymnastics for preschoolers?</p>
+        <h2 class="heading-xl">Brains <strong>&amp; bodies</strong></h2>
+        <p>Gymnastics builds strength, flexibility, balance, perseverance, discipline, socialization and confidence. Kids practice academic success skills like colors, counting and coordination.</p>
+        <p>They develop gross motor skills for the playground and monkey bars — and fine motor skills for scissors, pencils, art and keyboards.</p>
+        <p><a href={site.articles.preschool.url}>{site.articles.preschool.title}</a></p>
+      </div>
+      <div class="card card--soft">
+        <h3>Tot-sized equipment</h3>
+        <ul class="check-list">
+          <li>Mini springboards</li>
+          <li>Floor-level beams</li>
+          <li>Pint-sized bars and parallel bars</li>
+          <li>Mini ring tower</li>
+          <li>Floor exercise</li>
+          <li>Trampoline &amp; more</li>
+        </ul>
+        <p class="muted mb-0" style="margin-top:16px"><strong>${fees.membership}.00 annual Flex Gymnastics membership is required for class participation.</strong></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--soft" id="preschool">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Ages 3–5</p>
+        <h2 class="heading-xl">Preschool <strong>classes</strong></h2>
+        <p class="lead">50-minute classes offered morning, afternoon, evening and Saturdays. All Preschool classes are $124/month.</p>
+      </div>
+      <RegistrationBanner scheduleHref={site.links.preschoolSchedule} scheduleLabel="Live Preschool Schedule" />
+      <div style="margin-top:24px">
+        <ScheduleTable id="preschool-schedule" programs={['preschool']} liveLink={{ href: site.links.preschoolSchedule, label: 'view the live Preschool schedule' }} />
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="kinder">
+    <div class="container">
+      <div class="split" style="margin-bottom:40px">
+        <div>
+          <p class="eyebrow">Ages 5–6</p>
+          <h2 class="heading-xl">Kinder <strong>classes</strong></h2>
+          <p class="lead">For kids entering Kindergarten the next school year.</p>
+          <p>Kinder teaches playground, movement and social skills, group dynamics, coordination, colors, shapes, numbers &amp; more.</p>
+          <ul class="chips" role="list">
+            <li>Minimum age: 5 yrs 2 mos</li>
+            <li>Kinder year: March 1 – February 28</li>
+            <li>Join any time — open enrollment</li>
+          </ul>
+        </div>
+        <Photo alt="Kinder gymnasts practicing forward rolls" ratio="16/10" tone="lavender" />
+      </div>
+      <ScheduleTable id="kinder-schedule" programs={['kinder']} liveLink={{ href: site.links.kinderSchedule, label: 'view the live Kinder schedule' }} />
+    </div>
+  </section>
+
+  <section class="section--tight">
+    <div class="container stack">
+      <ContactStrip />
+      <AgeLinks exclude={['preschool', 'kinder']} />
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,77 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import RegistrationBanner from '../components/RegistrationBanner.astro';
+import ScheduleTable from '../components/ScheduleTable.astro';
+import ContactStrip from '../components/ContactStrip.astro';
+import AgeLinks from '../components/AgeLinks.astro';
+import Photo from '../components/Photo.astro';
+import Icon from '../components/Icon.astro';
+import { site } from '../data/site';
+---
+<BaseLayout
+  title="Boys Gymnastics Classes (Ages 6+)"
+  description="Boys gymnastics classes ages 6+ in Oro Valley, AZ — floor, pommel horse, rings, vault, parallel bars, high bar and TumblTrak. 60-minute Beginner classes $132/month."
+>
+  <PageHero
+    eyebrow="Ages 6+"
+    title="Boys"
+    accent="Gymnastics"
+    lead="Physically active, mentally stimulating and unplugged — building focus, strength, confidence and a foundation for academics and many sports."
+    chips={['Floor Exercise', 'Pommel Horse', 'Still Rings', 'Vault', 'Parallel Bars', 'Horizontal Bar', 'TumblTrak']}
+    photoAlt="Boy gymnast holding a support on the parallel bars"
+  >
+    <a class="btn btn--primary" href="#schedule">See Class Times</a>
+    <a class="btn btn--ghost" href={site.links.enroll}>Enroll Now</a>
+  </PageHero>
+
+  <section class="section">
+    <div class="container split">
+      <div class="prose">
+        <p class="eyebrow">Why boys gymnastics?</p>
+        <h2 class="heading-xl">Strong body, <strong>sharp mind</strong></h2>
+        <p>Boys gymnastics builds focus, fitness, flexibility, isolation, motor control, discipline and strength. It teaches problem-solving, confidence, self-esteem, perseverance and work ethic — foundations for academics and many sports.</p>
+        <p>Our recreational program prepares boys for <a href="/team-development-for-boys/">Team Prep</a> and the <a href="/boys-competitive-teams/">competitive team</a>. Classes are 60 minutes for ages 6+ (or by invitation). Kinder-age boys should enroll in <a href="/preschool-gymnastics/#kinder">Kinder classes</a>.</p>
+        <p><a href={site.articles.boys.url}>{site.articles.boys.title}</a></p>
+      </div>
+      <Photo alt="Boys class practicing on the still rings" ratio="4/3" />
+    </div>
+  </section>
+
+  <section class="section section--soft">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Schedule</p>
+        <h2 class="heading-xl">Beginner <strong>class times</strong></h2>
+        <p class="lead">Beginner classes are $132/month for ages 6–12.</p>
+      </div>
+      <RegistrationBanner scheduleHref={site.links.boysSchedule} scheduleLabel="Live Boys Schedule" />
+      <div style="margin-top:24px">
+        <ScheduleTable programs={['boys']} liveLink={{ href: site.links.boysSchedule, label: 'view the live Boys schedule' }} />
+      </div>
+
+      <div class="card card--dark registrar">
+        <Icon name="sms" size={36} />
+        <div>
+          <h3>Intermediate, Advanced &amp; Team Development</h3>
+          <p class="mb-0">These classes are placed by our Registrar. Text <strong>{site.phones.text.label}</strong>.</p>
+        </div>
+        <a class="btn btn--primary" href={`sms:${site.phones.text.tel}`}>Text the Registrar</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section--tight">
+    <div class="container stack">
+      <ContactStrip />
+      <AgeLinks exclude={['boys']} />
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .registrar { display: grid; grid-template-columns: auto 1fr auto; gap: 20px; align-items: center; margin-top: 40px; }
+  .registrar :global(svg) { color: var(--lime-400); }
+  .registrar h3 { color: #fff; }
+  @media (max-width: 700px) { .registrar { grid-template-columns: 1fr; } }
+</style>

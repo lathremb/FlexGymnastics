@@ -1,0 +1,10 @@
+---
+// Review flag for the gym owner. Hidden site-wide when site.showOwnerNotes = false.
+import { site } from '../data/site';
+---
+{site.showOwnerNotes && (
+  <aside class="owner-note" role="note">
+    <strong>Owner note — confirm before launch</strong>
+    <slot />
+  </aside>
+)}

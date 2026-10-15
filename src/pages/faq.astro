@@ -1,0 +1,39 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import Faq from '../components/Faq.astro';
+import RegistrationBanner from '../components/RegistrationBanner.astro';
+import ContactStrip from '../components/ContactStrip.astro';
+import { faqs } from '../data/faq';
+import { site } from '../data/site';
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim() },
+  })),
+};
+---
+<BaseLayout
+  title="FAQ"
+  description="Answers to common questions at Flex Gymnastics AZ: payments, when to start, what to wear, watching class, coach-to-child ratios and insurance."
+>
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+  <PageHero eyebrow="Have a question?" title="Frequently asked" accent="questions">
+    <a class="btn btn--primary" href={site.links.enroll}>Online Registration</a>
+    <a class="btn btn--ghost" href={site.links.portal}>Parent Portal</a>
+  </PageHero>
+
+  <section class="section">
+    <div class="container container--narrow">
+      <Faq items={faqs} />
+      <div style="margin-top:48px" class="stack">
+        <RegistrationBanner />
+        <ContactStrip heading="Still have a question? Text or call us." />
+      </div>
+    </div>
+  </section>
+</BaseLayout>

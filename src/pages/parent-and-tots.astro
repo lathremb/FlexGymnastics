@@ -1,0 +1,87 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import Photo from '../components/Photo.astro';
+import RegistrationBanner from '../components/RegistrationBanner.astro';
+import ScheduleTable from '../components/ScheduleTable.astro';
+import ContactStrip from '../components/ContactStrip.astro';
+import AgeLinks from '../components/AgeLinks.astro';
+import { site, fees } from '../data/site';
+---
+<BaseLayout
+  title="Parent & Tot Gymnastics (Ages 1–3)"
+  description="Parent & Tot gymnastics classes for ages 1–3 in Oro Valley, AZ. Tots and their grown-up partner jump, swing, roll and climb on tot-sized equipment. $124/month."
+>
+  <PageHero
+    eyebrow="Ages 1–3 · With a parent partner"
+    title="Parent"
+    accent="& Tot"
+    lead="Gymnastics is a great first sport for tots! Jumping, swinging, rolling, running, tumbling and climbing — together."
+    chips={['Ages 12–39 months', 'Co-ed', '50-minute classes', '$124 / month']}
+    photoAlt="Toddler and parent partner on a floor-level balance beam"
+  >
+    <a class="btn btn--primary" href="#schedule">See Class Times</a>
+    <a class="btn btn--ghost" href={site.links.enroll}>Enroll Now</a>
+  </PageHero>
+
+  <section class="section">
+    <div class="container split">
+      <div class="prose">
+        <p class="eyebrow">Fitness is fun!</p>
+        <h2 class="heading-xl">A great <strong>first sport</strong></h2>
+        <p>Jumping, swinging, rolling, running, tumbling and climbing develops walking, running, skipping, climbing, inversion, balance, sequencing, coordination, socializing, sharing and more. Being a parent partner is an important part of demonstrating to your tot that fitness is fun!</p>
+        <p>Classes are designed for ages 15–40 months, but any tot who is up, walking, crawling, hopping and ready to move is welcome with an adult partner. Co-ed for 12–39 months.</p>
+        <p><a href={site.articles.tots.url}>{site.articles.tots.title}</a></p>
+      </div>
+      <div class="card card--soft">
+        <h3>What your tot will explore</h3>
+        <ul class="check-list">
+          <li>Floor-level balance beams</li>
+          <li>Pint-sized bars</li>
+          <li>Floor-level parallel bars</li>
+          <li>Obstacle-course tunnel crawling and climbing</li>
+          <li>TumblTrak &amp; more</li>
+        </ul>
+        <p class="muted mb-0" style="margin-top:16px">Parent partners learn to provide safe exploration and basic-movement instruction.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--soft">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Schedule</p>
+        <h2 class="heading-xl">Parent &amp; Tot <strong>classes</strong></h2>
+        <p class="lead">All Parent &amp; Tot classes are $124/month. A ${fees.membership} annual Flex membership is required.</p>
+      </div>
+      <RegistrationBanner scheduleHref={site.links.parentTotSchedule} scheduleLabel="Live Parent & Tot Schedule" />
+      <div style="margin-top:24px">
+        <ScheduleTable programs={['parent-tot']} liveLink={{ href: site.links.parentTotSchedule, label: 'view the live Parent & Tot schedule' }} />
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container split">
+      <Photo alt="Lil' Ninja kids on a soft obstacle course" ratio="16/10" tone="lime" />
+      <div>
+        <p class="eyebrow">NinjaZone Tots</p>
+        <h2 class="heading-xl">Ready for <strong>Lil' Ninja?</strong></h2>
+        <p class="lead">Once your little one turns 3, Lil' Ninja classes (ages 3–5) mix obstacles, gymnastics and martial-arts-inspired moves in 40 minutes of fun.</p>
+        <a class="btn btn--secondary" href="/ninjazone/#lil-ninja">See Lil' Ninja</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section--tight">
+    <div class="container stack">
+      <ContactStrip />
+      <AgeLinks exclude={['parent-tot']} />
+      <p class="tagline">Gymnastics: Begin Here, Go Anywhere!</p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .tagline { font-family: var(--font-display); font-weight: 800; font-size: var(--fs-xl); text-transform: uppercase; color: var(--purple-600); text-align: center; padding-top: 24px; }
+</style>

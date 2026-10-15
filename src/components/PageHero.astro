@@ -1,0 +1,48 @@
+---
+// Interior page hero — dark band with uppercase headline, chips and CTAs.
+import Photo from './Photo.astro';
+interface Props {
+  eyebrow?: string;
+  title: string;
+  accent?: string;
+  lead?: string;
+  chips?: string[];
+  photoAlt?: string;
+  photoSrc?: string;
+}
+const { eyebrow, title, accent, lead, chips, photoAlt, photoSrc } = Astro.props;
+---
+<section class="hero page-hero">
+  <div class:list={['container', 'page-hero__inner', { 'has-photo': photoAlt }]}>
+    <div class="page-hero__copy">
+      {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+      <h1 class="display">{title}{accent && <><br /><strong>{accent}</strong></>}</h1>
+      {lead && <p class="lead">{lead}</p>}
+      {chips && (
+        <ul class="chips" role="list">{chips.map((c) => <li>{c}</li>)}</ul>
+      )}
+      <div class="btn-row"><slot /></div>
+    </div>
+    {photoAlt && (
+      <div class="page-hero__photo">
+        <Photo alt={photoAlt} src={photoSrc} ratio="5/4" eager />
+      </div>
+    )}
+  </div>
+</section>
+
+<style>
+  .page-hero {
+    position: relative; overflow: hidden; color: #fff;
+    background:
+      radial-gradient(900px 500px at 100% 0%, rgb(143 98 196 / 45%), transparent 60%),
+      radial-gradient(700px 400px at 0% 100%, rgb(146 208 80 / 14%), transparent 60%),
+      var(--purple-900);
+    padding-block: clamp(48px, 8vw, 104px);
+  }
+  .page-hero__inner { display: grid; gap: 40px; align-items: center; }
+  @media (min-width: 960px) { .page-hero__inner.has-photo { grid-template-columns: 1.15fr 1fr; } }
+  .page-hero .display { font-size: var(--fs-3xl); color: #fff; }
+  .page-hero .lead { color: rgb(255 255 255 / 86%); }
+  .page-hero .chips li { background: rgb(255 255 255 / 10%); color: #fff; }
+</style>

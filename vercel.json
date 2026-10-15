@@ -1,0 +1,7 @@
+{
+  "trailingSlash": true,
+  "redirects": [
+    { "source": "/classes-orig/:path*", "destination": "/classes/", "permanent": true },
+    { "source": "/online-fun-workouts/:path*", "destination": "/", "permanent": true }
+  ]
+}

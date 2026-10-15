@@ -1,0 +1,108 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import RegistrationBanner from '../components/RegistrationBanner.astro';
+import ContactStrip from '../components/ContactStrip.astro';
+import ScheduleTable from '../components/ScheduleTable.astro';
+import ContactForm from '../components/ContactForm.astro';
+import Icon from '../components/Icon.astro';
+import { site } from '../data/site';
+
+const picker = [
+  { ages: '1–3', title: 'Parent & Tot', text: 'A first sport with a grown-up partner.', href: '/parent-and-tots/', tone: 'lav' },
+  { ages: '3–5', title: 'Preschool', text: 'Tot-sized equipment, big-kid confidence.', href: '/preschool-gymnastics/', tone: 'lav' },
+  { ages: '5–6', title: 'Kinder', text: 'For kids entering Kindergarten next year.', href: '/preschool-gymnastics/#kinder', tone: 'lav' },
+  { ages: '6+', title: 'Girls Gymnastics', text: 'Vault, bars, beam, floor & TumblTrak.', href: '/girls-classes/', tone: 'purple' },
+  { ages: '6+', title: 'Boys Gymnastics', text: 'All six men’s events + TumblTrak.', href: '/boys-classes/', tone: 'purple' },
+  { ages: '3–13', title: 'NinjaZone', text: "Obstacles, martial arts & freestyle — plus Lil' Ninja.", href: '/ninjazone/', tone: 'lime' },
+  { ages: '$', title: 'Tuition', text: 'Monthly tuition, membership & policies.', href: '/tuition/', tone: 'dark' },
+];
+---
+<BaseLayout
+  title="Classes & Schedule"
+  description="Find the right gymnastics or NinjaZone class at Flex Gymnastics AZ in Oro Valley. Browse the schedule by age, day and program — Parent & Tot, Preschool, Kinder, Girls, Boys and NinjaZone."
+>
+  <PageHero
+    eyebrow="Schedule of Classes"
+    title="Classes for"
+    accent="every stage"
+    lead="Pick your child’s age to get started, then filter the schedule by day. Open enrollment means you can join any time."
+  >
+    <a class="btn btn--primary" href="#schedule">See the Schedule</a>
+    <a class="btn btn--ghost" href={site.links.enroll}>Online Registration</a>
+  </PageHero>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Step 1</p>
+        <h2 class="heading-xl">Choose by <strong>age &amp; program</strong></h2>
+      </div>
+      <ul class="picker" role="list">
+        {picker.map((p) => (
+          <li>
+            <a class={`picker__card picker__card--${p.tone}`} href={p.href}>
+              <span class="picker__ages">{p.ages === '$' ? <Icon name="dollar" size={30} /> : <>{p.ages}<small>{p.ages.includes('+') || p.ages.includes('–') ? 'yrs' : ''}</small></>}</span>
+              <span class="picker__title">{p.title}</span>
+              <span class="picker__text">{p.text}</span>
+              <span class="link-arrow" aria-hidden="true">Explore</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section--soft" id="schedule-section">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Step 2</p>
+        <h2 class="heading-xl">Find a <strong>class time</strong></h2>
+        <p class="lead">Our Back-To-School Schedule of Classes is updated frequently. If you don’t see a class to fit your schedule, fill out the form below and make a request!</p>
+      </div>
+      <RegistrationBanner scheduleHref={site.links.gymSchedule} scheduleLabel="Live Class Schedule" />
+      <div style="margin-top:24px">
+        <ScheduleTable id="schedule" />
+      </div>
+      <p class="small muted" style="margin-top:16px">Girls Advanced, Boys Intermediate/Advanced and Team Development classes are placed by the Registrar — <a href={`sms:${site.phones.text.tel}`}>text {site.phones.text.label}</a>.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container split" style="align-items:start">
+      <div>
+        <p class="eyebrow">Questions about classes?</p>
+        <h2 class="heading-xl">Ask us or <strong>request a class</strong></h2>
+        <p class="lead">For questions about classes, please fill out the contact form, or text us. If you don’t see a class to fit your schedule, use the form to make a request!</p>
+        <ContactStrip />
+      </div>
+      <ContactForm />
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .picker { list-style: none; padding: 0; margin: 0; display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr)); }
+  .picker__card {
+    display: flex; flex-direction: column; height: 100%; padding: 24px; border-radius: var(--radius-lg); text-decoration: none;
+    color: var(--ink); background: var(--purple-50); border: 2px solid transparent; transition: transform .15s ease, border-color .15s ease;
+  }
+  .picker__card:hover { transform: translateY(-4px); border-color: var(--purple-600); color: var(--ink); }
+  .picker__ages { font-family: var(--font-display); font-weight: 800; font-size: 2.8rem; line-height: 1; color: var(--purple-600); margin-bottom: 14px; display: flex; align-items: baseline; gap: 6px; min-height: 2.8rem; }
+  .picker__ages small { font-size: 1rem; font-weight: 700; }
+  .picker__title { font-family: var(--font-display); font-weight: 800; font-size: 1.3rem; text-transform: uppercase; }
+  .picker__text { color: var(--ink-soft); flex: 1; margin: 6px 0 16px; }
+  .picker__card .link-arrow { color: var(--purple-600); }
+  .picker__card--purple { background: var(--purple-600); color: #fff; }
+  .picker__card--purple .picker__ages, .picker__card--purple .link-arrow { color: var(--lime-400); }
+  .picker__card--purple .picker__text { color: rgb(255 255 255 / 84%); }
+  .picker__card--purple:hover { color: #fff; border-color: var(--lime-400); }
+  .picker__card--lime { background: var(--lime-400); }
+  .picker__card--lime .picker__ages { color: var(--purple-800); }
+  .picker__card--lime .picker__text { color: var(--purple-950); }
+  .picker__card--lime .link-arrow { color: var(--purple-800); }
+  .picker__card--dark { background: var(--purple-900); color: #fff; }
+  .picker__card--dark .picker__ages, .picker__card--dark .link-arrow { color: var(--lime-400); }
+  .picker__card--dark .picker__text { color: rgb(255 255 255 / 80%); }
+  .picker__card--dark:hover { color: #fff; border-color: var(--lime-400); }
+</style>

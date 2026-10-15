@@ -1,0 +1,27 @@
+---
+// Recurring "Text 520-263-8795 or Call 520-744-6180 / 520-775-FLEX" strip.
+import Icon from './Icon.astro';
+import { site } from '../data/site';
+interface Props { heading?: string }
+const { heading = 'Questions? We’re happy to help.' } = Astro.props;
+---
+<div class="contact-strip">
+  <p class="contact-strip__heading">{heading}</p>
+  <div class="contact-strip__actions">
+    <a href={`sms:${site.phones.text.tel}`}><Icon name="sms" /> <span>Text <strong>{site.phones.text.label}</strong></span></a>
+    <a href={`tel:${site.phones.main.tel}`}><Icon name="phone" /> <span>Call <strong>{site.phones.main.label}</strong></span></a>
+    <a href={`tel:${site.phones.flex.tel}`}><Icon name="phone" /> <span>or <strong>{site.phones.flex.label}</strong></span></a>
+  </div>
+</div>
+
+<style>
+  .contact-strip {
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px 32px;
+    padding: 22px 28px; border-radius: var(--radius); background: var(--purple-800); color: #fff;
+  }
+  .contact-strip__heading { margin: 0; font-family: var(--font-display); font-weight: 700; font-size: 1.15rem; }
+  .contact-strip__actions { display: flex; flex-wrap: wrap; gap: 10px 24px; }
+  .contact-strip a { display: inline-flex; align-items: center; gap: 8px; color: #fff; text-decoration: none; min-height: 44px; }
+  .contact-strip a:hover { color: var(--lime-300); }
+  .contact-strip svg { color: var(--lime-400); }
+</style>

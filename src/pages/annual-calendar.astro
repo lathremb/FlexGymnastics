@@ -1,0 +1,129 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import OwnerNote from '../components/OwnerNote.astro';
+import ContactStrip from '../components/ContactStrip.astro';
+import { site, closures } from '../data/site';
+
+// Season timeline (Aug → Jul). start/end are month indexes in `months`.
+const months = ['Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'];
+const seasonYear = '2025–26';
+const seasons = [
+  { team: 'Girls DP Team', blocks: [
+    { label: 'Fall', start: 0, end: 3, note: 'Aug – Nov' },
+    { label: 'Winter/Spring', start: 4, end: 8, note: 'Dec – Mar/Apr' },
+  ] },
+  { team: 'Girls XCEL', blocks: [
+    { label: 'Fall', start: 2, end: 3, note: 'Oct – Nov' },
+    { label: 'Winter/Spring', start: 4, end: 9, note: 'Dec – May' },
+  ] },
+  { team: 'Boys Team', blocks: [
+    { label: 'Winter/Spring', start: 4, end: 8, note: 'Dec – Apr' },
+  ] },
+];
+---
+<BaseLayout
+  title="Annual Calendar"
+  description="Flex Gymnastics AZ annual calendar: year-round class instruction, gym closures, tuition billing dates and competitive team seasons for girls DP, XCEL and boys teams."
+>
+  <PageHero
+    eyebrow="Annual Calendar"
+    title="Year-round"
+    accent="instruction"
+    lead="Class instruction runs all year. Here’s what to know about closures, billing and team seasons."
+  >
+    <a class="btn btn--primary" href="#closures">Gym Closures</a>
+    <a class="btn btn--ghost" href="#seasons">Team Seasons</a>
+  </PageHero>
+
+  <section class="section">
+    <div class="container">
+      <div class="grid grid-2">
+        <div class="card" id="closures">
+          <p class="eyebrow">Gym closed</p>
+          <h2 class="h-card">Closures</h2>
+          <OwnerNote>
+            The current site lists different Thanksgiving dates on two pages (Home: Nov 26–28; Calendar: Nov 27) and Dec 24–25 on the Calendar vs. Dec 22–31 Winter Break on Home. The {closures.year} dates are shown — please confirm the current year’s closures.
+          </OwnerNote>
+          <ul class="closures" role="list">
+            {closures.items.map((c) => (
+              <li><span>{c.name}</span><strong>{c.dates}</strong></li>
+            ))}
+            <li><span>Thanksgiving Day</span><strong>Nov 27</strong></li>
+            <li><span>Christmas Eve & Day</span><strong>Dec 24 – 25</strong></li>
+          </ul>
+          {closures.notes.map((n) => <p class="small muted mb-0">{n}</p>)}
+        </div>
+
+        <div class="stack">
+          <div class="card card--lime">
+            <p class="eyebrow">Billing</p>
+            <h2 class="h-card">Tuition dates</h2>
+            <p>Tuition is auto-paid on the <strong>20th of the preceding month</strong>.</p>
+            <p class="mb-0">To pause classes, text or email <a href={`sms:${site.phones.text.tel}`}>{site.phones.text.label}</a> or <a href={`mailto:${site.email}`}>{site.email}</a> <strong>on or before the 19th</strong>.</p>
+          </div>
+          <div class="card card--soft">
+            <p class="eyebrow">Classes</p>
+            <h2 class="h-card">Year-round</h2>
+            <p class="mb-0">Class instruction is year-round with open enrollment — join any time. Sundays closed.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--soft" id="seasons">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Competitive teams</p>
+        <h2 class="heading-xl">{seasonYear} <strong>team seasons</strong></h2>
+        <OwnerNote>These are the 2025–26 seasons from the current site. Update to 2026–27 in <code>src/pages/annual-calendar.astro</code>.</OwnerNote>
+      </div>
+
+      <div class="timeline">
+        <div class="timeline__row" aria-hidden="true">
+          <span></span>
+          <div class="timeline__months">{months.map((m) => <span class="timeline__month">{m}</span>)}</div>
+        </div>
+        {seasons.map((s) => (
+          <div class="timeline__row">
+            <h3 class="timeline__team">{s.team}</h3>
+            <div class="timeline__track">
+              {s.blocks.map((b, i) => (
+                <span
+                  class:list={['timeline__block', { 'timeline__block--alt': i % 2 === 1 }]}
+                  style={`grid-column:${b.start + 1} / ${b.end + 2}`}
+                >
+                  <strong>{b.label}</strong> <span>{b.note}</span>
+                </span>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+      <p class="small muted" style="margin-top:16px">Team Programs: please refer to your Annual Team Calendar for team closure dates.</p>
+    </div>
+  </section>
+
+  <section class="section--tight">
+    <div class="container"><ContactStrip /></div>
+  </section>
+</BaseLayout>
+
+<style>
+  .h-card { font-size: 1.6rem; text-transform: uppercase; }
+  .closures { list-style: none; padding: 0; margin: 0 0 16px; }
+  .closures li { display: flex; justify-content: space-between; gap: 16px; padding: 12px 0; border-bottom: 1px dashed var(--line); }
+  .closures strong { text-align: right; color: var(--purple-700); }
+
+  .timeline { background: #fff; border-radius: var(--radius); padding: 16px; box-shadow: var(--shadow); overflow-x: auto; }
+  .timeline__row { display: grid; grid-template-columns: 150px 1fr; gap: 12px; align-items: center; min-width: 720px; padding: 10px 0; }
+  .timeline__row + .timeline__row { border-top: 1px solid var(--line); }
+  .timeline__months { display: grid; grid-template-columns: repeat(12, 1fr); gap: 4px; }
+  .timeline__month { font-family: var(--font-display); font-weight: 800; font-size: .75rem; text-transform: uppercase; letter-spacing: .08em; color: var(--ink-soft); text-align: center; }
+  .timeline__team { font-family: var(--font-display); font-weight: 800; font-size: 1rem; margin: 0; }
+  .timeline__track { display: grid; grid-template-columns: repeat(12, 1fr); gap: 4px; min-height: 52px; background: var(--purple-50); border-radius: 10px; }
+  .timeline__block { grid-row: 1; display: flex; flex-direction: column; justify-content: center; padding: 6px 12px; border-radius: 10px; background: var(--purple-600); color: #fff; font-size: var(--fs-xs); line-height: 1.2; }
+  .timeline__block strong { font-family: var(--font-display); font-size: .85rem; }
+  .timeline__block--alt { background: var(--lime-400); color: var(--purple-950); }
+</style>

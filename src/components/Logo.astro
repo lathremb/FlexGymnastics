@@ -1,0 +1,33 @@
+---
+import { site } from '../data/site';
+interface Props { tone?: 'dark' | 'light' }
+const { tone = 'dark' } = Astro.props;
+---
+<a href="/" class:list={['logo', `logo--${tone}`]} aria-label="Flex Gymnastics AZ — home">
+  {site.logo ? (
+    <img src={site.logo} alt="Flex Gymnastics" width="178" height="102" />
+  ) : (
+    <span class="logo__mark" aria-hidden="true">
+      <span class="logo__flex">FLEX</span>
+      <span class="logo__sub">Gymnastics</span>
+    </span>
+  )}
+</a>
+
+<style>
+  .logo { display: inline-flex; align-items: center; text-decoration: none; line-height: 1; }
+  .logo img { height: 56px; width: auto; }
+  /* Logo file has a white background — sit it on a white badge on dark areas */
+  .logo--light img { height: 64px; background: #fff; padding: 6px 10px; border-radius: 12px; box-sizing: content-box; }
+  .logo__mark { display: inline-flex; flex-direction: column; }
+  .logo__flex {
+    font-family: var(--font-display); font-weight: 900; font-size: 2.1rem; letter-spacing: -0.02em;
+    color: var(--purple-600); font-style: italic;
+  }
+  .logo__sub {
+    font-family: var(--font-display); font-weight: 800; font-size: 0.68rem; letter-spacing: 0.24em;
+    text-transform: uppercase; color: var(--ink); margin-top: 1px;
+  }
+  .logo--light .logo__flex { color: #fff; }
+  .logo--light .logo__sub { color: var(--lime-400); }
+</style>

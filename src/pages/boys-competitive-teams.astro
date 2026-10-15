@@ -1,0 +1,43 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import Photo from '../components/Photo.astro';
+import ContactStrip from '../components/ContactStrip.astro';
+import { site } from '../data/site';
+---
+<BaseLayout
+  title="Boys Competitive Teams"
+  description="The Flex Gymnastics AZ boys competitive team program features Levels 3 through 8. Call for further information."
+>
+  <PageHero
+    eyebrow="Boys team"
+    title="Boys"
+    accent="Competitive Teams"
+    lead="Our boys team program features Levels 3 through 8."
+    chips={['Levels 3 – 8', 'Since spring 2014']}
+    photoAlt="Boys competitive gymnast saluting the judges"
+  >
+    <a class="btn btn--primary" href={`tel:${site.phones.main.tel}`}>Call for Information</a>
+    <a class="btn btn--ghost" href="/team-development-for-boys/">Team Development</a>
+  </PageHero>
+
+  <section class="section">
+    <div class="container split">
+      <div class="prose">
+        <p class="eyebrow">Our history</p>
+        <h2 class="heading-xl">Levels <strong>3 through 8</strong></h2>
+        <p>Our grandfathered Gymnastics World Northwest team began its boys competitive program in spring 2014, and today the program features Levels 3 through 8.</p>
+        <p><strong>Call for further information.</strong></p>
+        <div class="btn-row">
+          <a class="btn btn--secondary" href={`tel:${site.phones.main.tel}`}>Call {site.phones.main.label}</a>
+          <a class="btn btn--outline" href="/annual-calendar/">Season Calendar</a>
+        </div>
+      </div>
+      <Photo alt="Boys team gymnast performing on the pommel horse" ratio="4/3" />
+    </div>
+  </section>
+
+  <section class="section--tight">
+    <div class="container"><ContactStrip /></div>
+  </section>
+</BaseLayout>

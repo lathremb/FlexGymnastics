@@ -1,0 +1,40 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import ProgramCard from '../components/ProgramCard.astro';
+import ContactStrip from '../components/ContactStrip.astro';
+import { site } from '../data/site';
+---
+<BaseLayout
+  title="Teams"
+  description="Flex Gymnastics AZ team programs: invitation-based Team Development for girls and boys, USA Gymnastics DP and XCEL girls competitive teams, and the boys competitive team."
+>
+  <PageHero
+    eyebrow="Teams"
+    title="Work hard. Play safe."
+    accent="Be strong."
+    lead="From Team Prep to the competitive floor — all team programs are invitation only. Families may request a skills assessment."
+  >
+    <a class="btn btn--primary" href={`sms:${site.phones.text.tel}`}>Request a Skills Assessment</a>
+  </PageHero>
+
+  <section class="section">
+    <div class="container">
+      <div class="grid grid-4">
+        <ProgramCard title="Team Development for Girls" ages="3 +" href="/team-development-for-girls/" photoSrc="/images/team-glam-rock-five.webp" photoAlt="Five Flex gymnasts in team leotards in the gym">
+          <p>Hot Shots, Mighty Mights, SuperStars, SeniorStars and Pre-Team for USAG XCEL and DP.</p>
+        </ProgramCard>
+        <ProgramCard title="Girls Competitive Teams" ages="5 +" href="/girls-competitive-teams/" photoSrc="/images/team-group-meet.webp" photoAlt="The Flex girls team together at a gymnastics meet">
+          <p>USA Gymnastics Developmental Program (DP) Levels 2–9 and XCEL Bronze–Platinum+.</p>
+        </ProgramCard>
+        <ProgramCard title="Team Development for Boys" ages="6 +" href="/team-development-for-boys/" photoAlt="Boys Team Prep on the pommel horse" tone="lime">
+          <p>PreTeam Skills Development and PreTeam for Compulsory Team.</p>
+        </ProgramCard>
+        <ProgramCard title="Boys Competitive Teams" href="/boys-competitive-teams/" photoAlt="Boys competitive team at a meet">
+          <p>Boys team program featuring Levels 3 through 8.</p>
+        </ProgramCard>
+      </div>
+      <div style="margin-top:48px"><ContactStrip heading="Interested in team? Ask about a skills assessment." /></div>
+    </div>
+  </section>
+</BaseLayout>

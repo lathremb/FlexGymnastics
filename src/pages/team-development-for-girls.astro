@@ -1,0 +1,94 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import ContactStrip from '../components/ContactStrip.astro';
+import { site } from '../data/site';
+
+const ladder = [
+  { name: 'Hot Shots', ages: 'Girls 3–5', schedule: 'Two 60-min classes / week', text: 'For girls who show maturity, talent and aptitude.' },
+  { name: 'Mighty Mights', ages: 'Girls 4–6', schedule: 'Two 75-min classes / week', text: 'For girls advancing past Hot Shots.' },
+  { name: 'SuperStars', ages: 'Girls 4–8', schedule: 'Two 90-min classes / week', text: 'For girls beyond Beginning/Intermediate, or who completed Hot Shots/2.' },
+  { name: 'SeniorStars', ages: 'Girls 8+', schedule: 'Two 90-min classes / week', text: 'Continued progression toward Pre-Team.' },
+  { name: 'PreTeam for USAG XCEL', ages: 'Ages 7+', schedule: '90–120 min per class · 2–3 day progressive formats', text: 'Prepares for XCEL Bronze, Silver, Gold, Platinum & Diamond.' },
+  { name: 'PreTeam for USAG Development Program', ages: 'Ages 5+', schedule: '4–8 hours / week · 2–3 day progressive formats', text: 'Prepares for DP Levels 2–10.' },
+];
+const reqs = ['Regular attendance and punctuality', 'Positive attitude', 'Good work ethic', 'Coachability', 'Strength', 'Flexibility', 'Commitment'];
+---
+<BaseLayout
+  title="Team Development for Girls (Team Prep)"
+  description="Year-round girls Team Prep at Flex Gymnastics AZ: Hot Shots, Mighty Mights, SuperStars, SeniorStars and Pre-Team for USA Gymnastics XCEL and Development Program. Invitation only."
+>
+  <PageHero
+    eyebrow="Team Prep · Invitation only"
+    title="Team Development"
+    accent="for Girls"
+    lead="Work Hard! Play Safe! Be Strong! Year-round Team Prep focused on forward progression to the competitive team."
+    chips={['Vault', 'Uneven Bars', 'Balance Beam', 'Floor Exercise', 'Strength & Flexibility']}
+    photoSrc="/images/team-glam-rock-trophy.webp"
+    photoAlt="Young Flex team gymnasts smiling with a trophy in the gym"
+  >
+    <a class="btn btn--primary" href={`sms:${site.phones.text.tel}`}>Request a Skills Assessment</a>
+    <a class="btn btn--ghost" href="#progression">See the Progression</a>
+  </PageHero>
+
+  <section class="section">
+    <div class="container split" style="align-items:start">
+      <div class="prose">
+        <p class="eyebrow">The program</p>
+        <h2 class="heading-xl">Built for <strong>forward progress</strong></h2>
+        <p>Team Prep develops technique and skills on all four women’s Olympic events — Vault, Uneven Bars, Balance Beam and Floor Exercise — plus strength training and flexibility.</p>
+        <p>Invitation is based on aptitude, desire, maturity, commitment, behavior and talent. <strong>All programs are invitation only</strong>; families may request a skills assessment.</p>
+      </div>
+      <div class="card card--soft">
+        <h3>Competitive discipline requirements</h3>
+        <ul class="check-list">{reqs.map((r) => <li>{r}</li>)}</ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--dark" id="progression">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Progressions</p>
+        <h2 class="heading-xl">The path <strong>to team</strong></h2>
+      </div>
+      <ol class="ladder" role="list">
+        {ladder.map((s, i) => (
+          <li class="ladder__step">
+            <span class="ladder__num">{String(i + 1).padStart(2, '0')}</span>
+            <div>
+              <p class="ladder__ages">{s.ages}</p>
+              <h3>{s.name}</h3>
+              <p>{s.text}</p>
+              <p class="ladder__sched">{s.schedule}</p>
+            </div>
+            <span class="badge badge--invite">By Invitation</span>
+          </li>
+        ))}
+      </ol>
+      <p style="margin-top:32px"><a class="link-arrow" href="/girls-competitive-teams/">Next: Girls Competitive Teams</a></p>
+    </div>
+  </section>
+
+  <section class="section--tight">
+    <div class="container"><ContactStrip heading="Ask about a skills assessment." /></div>
+  </section>
+</BaseLayout>
+
+<style>
+  .ladder { list-style: none; padding: 0; margin: 0; display: grid; gap: 16px; position: relative; }
+  .ladder::before { content: ''; position: absolute; left: 31px; top: 24px; bottom: 24px; width: 3px; background: linear-gradient(var(--lime-400), var(--purple-400)); border-radius: 3px; }
+  .ladder__step {
+    position: relative; display: grid; grid-template-columns: 64px 1fr auto; gap: 20px; align-items: start;
+    padding: 22px 24px 22px 0; border-radius: var(--radius); background: rgb(255 255 255 / 5%);
+  }
+  .ladder__num { position: relative; z-index: 1; display: grid; place-items: center; width: 64px; height: 64px; border-radius: 50%; background: var(--lime-400); color: var(--purple-950); font-family: var(--font-display); font-weight: 800; font-size: 1.2rem; margin-left: 0; border: 6px solid var(--purple-900); }
+  .ladder__step h3 { color: #fff; text-transform: uppercase; margin-bottom: 4px; }
+  .ladder__step p { margin: 0 0 4px; }
+  .ladder__ages { font-family: var(--font-display); font-weight: 800; text-transform: uppercase; letter-spacing: .12em; font-size: .75rem; color: var(--lime-300) !important; }
+  .ladder__sched { font-weight: 700; color: var(--purple-300) !important; }
+  @media (max-width: 640px) {
+    .ladder__step { grid-template-columns: 64px 1fr; }
+    .ladder__step .badge { grid-column: 2; justify-self: start; }
+  }
+</style>

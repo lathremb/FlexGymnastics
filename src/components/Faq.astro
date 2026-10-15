@@ -1,0 +1,36 @@
+---
+// Accessible accordion built on native <details>/<summary>.
+interface Props { items: { q: string; a: string }[]; numbered?: boolean }
+const { items, numbered = true } = Astro.props;
+---
+<div class="faq">
+  {items.map((item, i) => (
+    <details class="faq__item" open={i === 0}>
+      <summary>
+        {numbered && <span class="faq__num">Q{i + 1}.</span>}
+        <span class="faq__q">{item.q}</span>
+        <span class="faq__icon" aria-hidden="true"></span>
+      </summary>
+      <div class="faq__a" set:html={item.a} />
+    </details>
+  ))}
+</div>
+
+<style>
+  .faq { border-top: 1px solid var(--line); }
+  .faq__item { border-bottom: 1px solid var(--line); }
+  .faq summary {
+    display: grid; grid-template-columns: auto 1fr auto; gap: 16px; align-items: center; cursor: pointer;
+    padding: 22px 4px; list-style: none; font-family: var(--font-display); font-weight: 700; font-size: clamp(1.1rem, 1rem + .5vw, 1.35rem);
+  }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq__num { color: var(--purple-600); font-weight: 800; min-width: 2.2em; }
+  .faq__icon { position: relative; width: 36px; height: 36px; border-radius: 50%; background: var(--purple-50); flex: none; }
+  .faq__icon::before, .faq__icon::after { content: ''; position: absolute; left: 50%; top: 50%; width: 14px; height: 2.5px; background: var(--purple-600); border-radius: 2px; transform: translate(-50%, -50%); transition: transform .2s ease; }
+  .faq__icon::after { transform: translate(-50%, -50%) rotate(90deg); }
+  .faq__item[open] .faq__icon { background: var(--lime-400); }
+  .faq__item[open] .faq__icon::after { transform: translate(-50%, -50%) rotate(0deg); }
+  .faq__a { padding: 0 4px 24px calc(2.2em + 20px); color: var(--ink-soft); max-width: 80ch; }
+  @media (max-width: 600px) { .faq__a { padding-left: 4px; } }
+  .faq__a :global(ul) { margin-top: 0.5em; }
+</style>

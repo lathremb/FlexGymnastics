@@ -1,0 +1,87 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import ContactForm from '../components/ContactForm.astro';
+import Icon from '../components/Icon.astro';
+import { site } from '../data/site';
+---
+<BaseLayout
+  title="Contact"
+  description="Contact Flex Gymnastics AZ at 11085 N Oracle Rd, Oro Valley, AZ 85737. Text 520-263-8795, call 520-744-6180 or 520-775-FLEX, or email FlexGymnasticsAZ@gmail.com."
+>
+  <PageHero eyebrow="Contact" title="Let's get" accent="moving">
+    <a class="btn btn--primary" href={`sms:${site.phones.text.tel}`}><Icon name="sms" /> Text Flex</a>
+    <a class="btn btn--ghost" href={`tel:${site.phones.main.tel}`}><Icon name="phone" /> Call</a>
+    <a class="btn btn--ghost" href={`mailto:${site.email}`}><Icon name="mail" /> Email Flex</a>
+  </PageHero>
+
+  <section class="section">
+    <div class="container">
+      <div class="contact-cards">
+        <a class="contact-card" href={`sms:${site.phones.text.tel}`}>
+          <span class="contact-card__icon"><Icon name="sms" size={26} /></span>
+          <span class="contact-card__label">Text</span>
+          <span class="contact-card__value">(520) 263-8795</span>
+        </a>
+        <div class="contact-card">
+          <span class="contact-card__icon"><Icon name="phone" size={26} /></span>
+          <span class="contact-card__label">Call</span>
+          <span class="contact-card__value"><a href={`tel:${site.phones.main.tel}`}>(520) 744-6180</a></span>
+          <span class="contact-card__value">or <a href={`tel:${site.phones.flex.tel}`}>(520) 775-FLEX (3539)</a></span>
+        </div>
+        <a class="contact-card" href={`mailto:${site.email}`}>
+          <span class="contact-card__icon"><Icon name="mail" size={26} /></span>
+          <span class="contact-card__label">Email</span>
+          <span class="contact-card__value contact-card__value--sm">{site.email}</span>
+        </a>
+        <div class="contact-card">
+          <span class="contact-card__icon"><Icon name="clock" size={26} /></span>
+          <span class="contact-card__label">Office hours</span>
+          {site.officeHours.map((h) => <span class="contact-card__value contact-card__value--sm">{h.days}: {h.hours}</span>)}
+        </div>
+      </div>
+      <p class="muted center" style="margin-top:20px">{site.gymHoursNote}</p>
+    </div>
+  </section>
+
+  <section class="section section--soft">
+    <div class="container split" style="align-items:start">
+      <div>
+        <p class="eyebrow">Send a message</p>
+        <h2 class="heading-xl">We'll <strong>get back to you</strong></h2>
+        <ContactForm />
+      </div>
+      <div>
+        <p class="eyebrow">Find us</p>
+        <h2 class="heading-xl">Visit <strong>the gym</strong></h2>
+        <p class="lead"><a href={site.address.mapUrl}>11085 North Oracle Road<br />Oro Valley, AZ 85737</a></p>
+        <div class="map">
+          <iframe
+            src={site.address.mapEmbed}
+            title="Map to Flex Gymnastics, 11085 N Oracle Rd, Oro Valley, AZ"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+          ></iframe>
+        </div>
+        <a class="btn btn--secondary" href={site.address.mapUrl} style="margin-top:16px"><Icon name="map" /> Get Directions</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .contact-cards { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); }
+  .contact-card {
+    display: flex; flex-direction: column; gap: 4px; padding: 26px; border-radius: var(--radius-lg); background: var(--purple-50);
+    color: var(--ink); text-decoration: none; border: 2px solid transparent; transition: border-color .15s ease;
+  }
+  a.contact-card:hover { border-color: var(--purple-600); color: var(--ink); }
+  .contact-card__icon { display: grid; place-items: center; width: 54px; height: 54px; border-radius: 16px; background: var(--purple-600); color: #fff; margin-bottom: 12px; }
+  .contact-card:first-child .contact-card__icon { background: var(--lime-400); color: var(--purple-950); }
+  .contact-card__label { font-family: var(--font-display); font-weight: 800; text-transform: uppercase; letter-spacing: .14em; font-size: .75rem; color: var(--purple-600); }
+  .contact-card__value { font-family: var(--font-display); font-weight: 700; font-size: 1.3rem; overflow-wrap: anywhere; }
+  .contact-card__value--sm { font-size: 1.05rem; }
+  .contact-card a { color: var(--ink); }
+  .map { border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow); aspect-ratio: 4 / 3; }
+  .map iframe { width: 100%; height: 100%; border: 0; }
+</style>

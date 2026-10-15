@@ -1,0 +1,121 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import Photo from '../components/Photo.astro';
+import ScheduleTable from '../components/ScheduleTable.astro';
+import ContactStrip from '../components/ContactStrip.astro';
+import AgeLinks from '../components/AgeLinks.astro';
+import OwnerNote from '../components/OwnerNote.astro';
+import { site, fees } from '../data/site';
+
+const pillars = [
+  { title: 'Martial Arts', text: 'Discipline' },
+  { title: 'Gymnastics', text: 'Coordination' },
+  { title: 'Obstacle Training', text: 'Strength & agility' },
+  { title: 'Freestyle Movement', text: 'Creativity' },
+];
+---
+<BaseLayout
+  title="NinjaZone & Lil' Ninja Classes (Ages 3–13)"
+  description="NinjaZone classes in Oro Valley, AZ combine obstacle training, gymnastics, martial arts and freestyle movement. NinjaZone ages 6–14 ($132/mo) and Lil' Ninja ages 3–5 ($124/mo)."
+>
+  <PageHero
+    eyebrow="Ages 3–13"
+    title="Ninja"
+    accent="Zone"
+    lead="Obstacle training, gymnastics, martial arts and freestyle movement — with the freedom for kids to progress and learn at their own pace."
+    chips={["NinjaZone 6–14 · $132/mo", "Lil' Ninja 3–5 · $124/mo", 'Ninja Night events']}
+    photoAlt="NinjaZone athlete leaping between obstacles"
+  >
+    <a class="btn btn--primary" href="#schedule">NinjaZone Times</a>
+    <a class="btn btn--ghost" href="#lil-ninja">Lil' Ninja Times</a>
+  </PageHero>
+
+  <section class="section">
+    <div class="container">
+      <div class="split">
+        <div class="prose">
+          <p class="eyebrow">The NinjaZone program</p>
+          <h2 class="heading-xl">Discovered at <strong>their own pace</strong></h2>
+          <p>The NinjaZone program brings together the discipline of martial arts, the coordination from gymnastics, the strength and agility from obstacle training and the creativity from freestyle movement — to be discovered at the child's own pace.</p>
+          <p>Flex runs the franchise NinjaZone curriculum: high-cardio, obstacle-course, ninja-themed, parkour-style movement.</p>
+        </div>
+        <ul class="pillars" role="list">
+          {pillars.map((p) => (
+            <li><strong>{p.title}</strong><span>{p.text}</span></li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="grid grid-2 reqs">
+        <div class="card card--lime">
+          <p class="req-price">${fees.ninjaUniform}</p>
+          <h3>Uniform required</h3>
+          <p class="mb-0">A ${fees.ninjaUniform} NinjaZone uniform is required for class participation.</p>
+        </div>
+        <div class="card card--soft">
+          <p class="req-price">${fees.membership}<small>/yr</small></p>
+          <h3>Flex membership</h3>
+          <p class="mb-0">A ${fees.membership} annual Flex membership is required. <a href="/tuition/">Tuition &amp; membership details</a>.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--soft">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Ages 6–14</p>
+        <h2 class="heading-xl">NinjaZone <strong>classes</strong></h2>
+        <p class="lead">50-minute classes, $132/month. Advanced class for ages 8–14.</p>
+      </div>
+      <ScheduleTable programs={['ninjazone']} liveLink={{ href: site.links.ninjaSchedule, label: 'view the live NinjaZone schedule' }} />
+    </div>
+  </section>
+
+  <section class="section" id="lil-ninja">
+    <div class="container">
+      <div class="split" style="margin-bottom:40px">
+        <div>
+          <p class="eyebrow">Ages 3–5</p>
+          <h2 class="heading-xl">Lil' Ninja <strong>classes</strong></h2>
+          <p class="lead">40 minutes weekly for girls &amp; boys ages 3–5. $124/month.</p>
+          <a class="btn btn--secondary" href={site.links.enroll}>Enroll in Lil' Ninja</a>
+        </div>
+        <Photo alt="Lil' Ninja preschoolers crawling through a tunnel obstacle" ratio="16/10" tone="lime" />
+      </div>
+      <ScheduleTable id="lil-ninja-schedule" programs={['lil-ninja']} liveLink={{ href: site.links.ninjaSchedule, label: "view the live Lil' Ninja schedule" }} />
+    </div>
+  </section>
+
+  <section class="section section--dark">
+    <div class="container split">
+      <div>
+        <p class="eyebrow">Events</p>
+        <h2 class="heading-xl">Ninja <strong>Night</strong></h2>
+        <p class="lead">We offer Ninja Night events for kids ages 3 to 13 years old! Text us for upcoming dates.</p>
+        <a class="btn btn--primary" href={`sms:${site.phones.text.tel}`}>Text for Ninja Night Dates</a>
+        <OwnerNote>Add upcoming Ninja Night dates/times and pricing here (not listed on the current site).</OwnerNote>
+      </div>
+      <Photo alt="Kids celebrating at a Flex Ninja Night event" ratio="16/10" tone="lavender" />
+    </div>
+  </section>
+
+  <section class="section--tight">
+    <div class="container stack">
+      <ContactStrip />
+      <AgeLinks exclude={['ninjazone', 'lil-ninja']} />
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .pillars { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .pillars li { padding: 22px; border-radius: var(--radius); background: var(--purple-900); color: #fff; }
+  .pillars li:nth-child(2), .pillars li:nth-child(3) { background: var(--purple-600); }
+  .pillars strong { display: block; font-family: var(--font-display); text-transform: uppercase; font-size: 1.1rem; }
+  .pillars span { color: var(--lime-300); font-weight: 700; }
+  .reqs { margin-top: 48px; }
+  .req-price { font-family: var(--font-display); font-weight: 800; font-size: 2.6rem; line-height: 1; color: var(--purple-600); margin-bottom: 8px; }
+  .req-price small { font-size: 1rem; }
+</style>

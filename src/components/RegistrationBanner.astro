@@ -1,0 +1,29 @@
+---
+// Recurring "NEW! Online Registration Form & Event/Party Waiver" module.
+import Icon from './Icon.astro';
+import { site } from '../data/site';
+interface Props { scheduleHref?: string; scheduleLabel?: string }
+const { scheduleHref = '/classes/#schedule', scheduleLabel = 'Schedule of Classes' } = Astro.props;
+---
+<div class="reg-banner">
+  <div class="reg-banner__icon" aria-hidden="true"><Icon name="spark" size={28} /></div>
+  <div class="reg-banner__copy">
+    <p class="reg-banner__kicker">New!</p>
+    <p class="reg-banner__title">Online Registration Form &amp; Event/Party Waiver</p>
+  </div>
+  <div class="btn-row">
+    <a class="btn btn--secondary btn--sm" href={scheduleHref}>{scheduleLabel}</a>
+    <a class="btn btn--primary btn--sm" href={site.links.enroll}>Online Registration</a>
+  </div>
+</div>
+
+<style>
+  .reg-banner {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 16px 24px; padding: 20px 24px;
+    border-radius: var(--radius); background: var(--lime-100); border: 2px solid var(--lime-300);
+  }
+  .reg-banner__icon { display: grid; place-items: center; width: 52px; height: 52px; border-radius: 50%; background: var(--lime-400); color: var(--purple-950); flex: none; }
+  .reg-banner__copy { flex: 1 1 260px; }
+  .reg-banner__kicker { margin: 0; font-family: var(--font-display); font-weight: 800; font-size: 0.75rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--purple-600); }
+  .reg-banner__title { margin: 0; font-family: var(--font-display); font-weight: 700; font-size: 1.2rem; line-height: 1.25; }
+</style>

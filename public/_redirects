@@ -1,0 +1,5 @@
+# Netlify / Cloudflare Pages 301 redirects (ignored by other hosts)
+/classes-orig/*        /classes/      301
+/classes-orig          /classes/      301
+/online-fun-workouts/* /              301
+/online-fun-workouts   /              301

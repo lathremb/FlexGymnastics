@@ -1,0 +1,45 @@
+---
+import Photo from './Photo.astro';
+interface Props {
+  title: string;
+  ages?: string;
+  href: string;
+  cta?: string;
+  photoAlt?: string;
+  photoSrc?: string;
+  tone?: 'purple' | 'lime' | 'lavender';
+}
+const { title, ages, href, cta = 'Learn more', photoAlt, photoSrc, tone } = Astro.props;
+---
+<article class="program-card">
+  {photoAlt && <Photo alt={photoAlt} src={photoSrc} ratio="4/3" tone={tone} />}
+  <div class="program-card__body">
+    {ages && <p class="program-card__ages">Ages {ages}</p>}
+    <h3><a href={href}>{title}</a></h3>
+    <div class="program-card__text"><slot /></div>
+    <span class="link-arrow" aria-hidden="true">{cta}</span>
+  </div>
+</article>
+
+<style>
+  .program-card {
+    position: relative; display: flex; flex-direction: column; background: #fff; border: 1px solid var(--line);
+    border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow); transition: transform .2s ease, box-shadow .2s ease;
+  }
+  .program-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+  .program-card :global(.photo) { border-radius: 0; }
+  .program-card__body { padding: 22px 24px 26px; display: flex; flex-direction: column; flex: 1; }
+  .program-card__ages {
+    align-self: flex-start; margin: 0 0 10px; padding: 4px 12px; border-radius: 999px; background: var(--lime-100); color: #3c6b0f;
+    font-family: var(--font-display); font-weight: 800; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase;
+  }
+  .program-card h3 { font-size: 1.4rem; text-transform: uppercase; margin-bottom: 8px; }
+  .program-card h3 a { color: var(--ink); text-decoration: none; }
+  /* Whole card clickable */
+  .program-card h3 a::after { content: ''; position: absolute; inset: 0; }
+  .program-card h3 a:focus-visible { outline: none; }
+  .program-card:has(a:focus-visible) { outline: 3px solid var(--lime-400); outline-offset: 3px; }
+  .program-card__text { color: var(--ink-soft); flex: 1; }
+  .program-card__text :global(p:last-child) { margin-bottom: 0; }
+  .program-card .link-arrow { margin-top: 18px; color: var(--purple-600); }
+</style>

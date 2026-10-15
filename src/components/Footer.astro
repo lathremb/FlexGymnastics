@@ -1,0 +1,93 @@
+---
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import { site } from '../data/site';
+const year = new Date().getFullYear();
+---
+<footer class="footer">
+  <div class="container">
+    <div class="footer__cta">
+      <h2 class="heading-xl">Begin here. <strong>Go anywhere.</strong></h2>
+      <div class="btn-row">
+        <a class="btn btn--primary" href={site.links.enroll}>Enroll Today</a>
+        <a class="btn btn--ghost" href="/classes/">Find a Class</a>
+      </div>
+    </div>
+
+    <div class="footer__grid">
+      <div class="footer__brand">
+        <Logo tone="light" />
+        <p>Recreational and competitive gymnastics for girls &amp; boys ages 12 months and up. Locally owned for 45+ years.</p>
+        <div class="footer__social">
+          <a href={site.social.facebook} aria-label="Facebook"><Icon name="facebook" /></a>
+          <a href={site.social.instagram} aria-label="Instagram"><Icon name="instagram" /></a>
+        </div>
+      </div>
+
+      <nav aria-label="Footer">
+        <h3 class="footer__title">Explore</h3>
+        <ul role="list">
+          <li><a href="/">Home</a></li>
+          <li><a href="/classes/">Classes</a></li>
+          <li><a href="/ninjazone/">NinjaZone</a></li>
+          <li><a href="/teams/">Teams</a></li>
+          <li><a href="/tuition/">Tuition &amp; Membership</a></li>
+          <li><a href="/annual-calendar/">Calendar</a></li>
+          <li><a href="/faq/">FAQ</a></li>
+          <li><a href="/about-us/">About Us</a></li>
+          <li><a href="/contact/">Contact</a></li>
+        </ul>
+      </nav>
+
+      <div>
+        <h3 class="footer__title">Families</h3>
+        <ul role="list">
+          <li><a href={site.links.enroll}>Enroll Today</a></li>
+          <li><a href={site.links.portal}>Parent Portal</a></li>
+          <li><a href={site.links.gymSchedule}>Gymnastics Schedule</a></li>
+          <li><a href={site.links.ninjaSchedule}>NinjaZone Schedule</a></li>
+          <li><a href={site.links.jobs}>We're Hiring!</a></li>
+          <li><a href={site.links.flexU}>Coaches FlexU</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="footer__title">Visit &amp; Contact</h3>
+        <ul role="list" class="footer__contact">
+          <li><Icon name="map" /><a href={site.address.mapUrl}>{site.address.street}<br />{site.address.city}, {site.address.region} {site.address.zip}</a></li>
+          <li><Icon name="phone" /><span><a href={`tel:${site.phones.main.tel}`}>{site.phones.main.label}</a><br /><a href={`tel:${site.phones.flex.tel}`}>{site.phones.flex.label}</a></span></li>
+          <li><Icon name="sms" /><a href={`sms:${site.phones.text.tel}`}>Text {site.phones.text.label}</a></li>
+          <li><Icon name="mail" /><a href={`mailto:${site.email}`}>{site.email}</a></li>
+        </ul>
+        <p class="footer__hours">{site.gymHoursNote}</p>
+      </div>
+    </div>
+
+    <div class="footer__bottom">
+      <p>© {year} Flex Gymnastics AZ. All rights reserved.</p>
+      <p>Work Hard! Play Safe! Be Strong!</p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer { background: var(--purple-950); color: rgb(255 255 255 / 82%); padding-top: clamp(56px, 8vw, 96px); }
+  .footer a { color: #fff; text-decoration: none; }
+  .footer a:hover { color: var(--lime-300); text-decoration: underline; }
+  .footer__cta { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 24px; padding-bottom: clamp(40px, 6vw, 72px); border-bottom: 1px solid rgb(255 255 255 / 12%); }
+  .footer__cta h2 { color: #fff; margin: 0; }
+  .footer__cta h2 :global(strong) { color: var(--lime-400); }
+  .footer__grid { display: grid; gap: 36px; padding-block: clamp(40px, 6vw, 64px); grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); }
+  @media (min-width: 1000px) { .footer__grid { grid-template-columns: 1.4fr 1fr 1fr 1.4fr; } }
+  .footer__brand p { margin-top: 16px; max-width: 34ch; }
+  .footer__title { font-size: 0.8rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--lime-400); margin-bottom: 16px; }
+  .footer ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+  .footer__contact li { display: grid; grid-template-columns: 20px 1fr; gap: 12px; align-items: start; }
+  .footer__contact svg { margin-top: 3px; color: var(--purple-300); }
+  .footer__hours { margin-top: 18px; font-size: var(--fs-sm); color: rgb(255 255 255 / 70%); }
+  .footer__social { display: flex; gap: 12px; }
+  .footer__social a { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; background: rgb(255 255 255 / 8%); }
+  .footer__social a:hover { background: var(--lime-400); color: var(--purple-950); }
+  .footer__bottom { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; padding-block: 24px; border-top: 1px solid rgb(255 255 255 / 12%); font-size: var(--fs-xs); }
+  .footer__bottom p { margin: 0; }
+</style>

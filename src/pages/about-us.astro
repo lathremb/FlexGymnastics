@@ -1,0 +1,104 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import Photo from '../components/Photo.astro';
+import Marquee from '../components/Marquee.astro';
+import OwnerNote from '../components/OwnerNote.astro';
+import Icon from '../components/Icon.astro';
+import { site } from '../data/site';
+
+const events = ['Vault', 'Uneven Bars', 'Balance Beams', 'Floor Exercise', 'Parallel Bars', 'High Bar', 'Still Rings', 'Pommel Horse', 'TumblTrak'];
+---
+<BaseLayout
+  title="About Us"
+  description="Flex Gymnastics AZ is a locally owned Tucson-area gymnastics business with 45+ years of experience and 60,000+ kids served, now in an 18,000+ sq ft facility in Oro Valley."
+>
+  <PageHero
+    eyebrow="Flex Gymnastics, our history"
+    title="Fitness is fun"
+    accent="at Flex!"
+    lead="The place for indoor fun and a love of sport and healthy living — with classes from first-time tot to fully committed competitive gymnast."
+    photoAlt="Flex Gymnastics facility interior with equipment"
+  >
+    <a class="btn btn--primary" href="/classes/">Explore Classes</a>
+    <a class="btn btn--ghost" href={site.address.mapUrl}>Visit Us</a>
+  </PageHero>
+
+  <section class="stats-band">
+    <div class="container">
+      <ul class="stats" role="list">
+        {site.stats.map((s) => <li><strong>{s.value}</strong><span>{s.label}</span></li>)}
+        <li><strong>2018</strong><span>Rebranded as FLEX</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container split">
+      <div class="prose">
+        <p class="eyebrow">Our story</p>
+        <h2 class="heading-xl">Locally owned, <strong>45+ years</strong></h2>
+        <p>Flex Gymnastics is a locally owned Tucson-area business with more than 45 years in business, serving more than 60,000 kids. We rebranded as FLEX in 2018 in Oro Valley, Arizona.</p>
+        <p>Our air-conditioned, new 18,000+ square foot growing facility offers classes for every level — from the first-time tot to the fully committed competitive gymnast.</p>
+        <h3>Our equipment &amp; events</h3>
+        <ul class="chips" role="list">{events.map((e) => <li>{e}</li>)}</ul>
+      </div>
+      <div class="about-grid">
+        <Photo alt="Gymnast on the uneven bars at Flex" ratio="3/4" />
+        <Photo alt="TumblTrak in the Flex gym" ratio="3/4" tone="lime" />
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--soft">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Curriculum</p>
+        <h2 class="heading-xl">Proven <strong>programs</strong></h2>
+      </div>
+      <div class="grid grid-2">
+        <div class="card">
+          <h3>NinjaZone</h3>
+          <p>Flex offers the franchise NinjaZone curriculum: high-cardio, obstacle-course, ninja-themed, parkour-style movement.</p>
+          <OwnerNote>The current About page says NinjaZone is for ages 15 months–13 years; the NinjaZone page and nav say 3–13. This site uses 3–13 — please confirm.</OwnerNote>
+          <a class="link-arrow" href="/ninjazone/">NinjaZone classes</a>
+        </div>
+        <div class="card">
+          <h3>Sweet Peas Gymnastics</h3>
+          <p class="mb-0">An educational, movement-based gymnastics curriculum promoting physical, social and cognitive development for ages 6 months–6 years.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Marquee />
+
+  <section class="section">
+    <div class="container split">
+      <div>
+        <p class="eyebrow">Visit us</p>
+        <h2 class="heading-xl">Come see what the <strong>fun is all about</strong></h2>
+        <ul class="visit" role="list">
+          <li><Icon name="map" /><a href={site.address.mapUrl}>{site.address.full}</a></li>
+          <li><Icon name="phone" /><span><a href={`tel:${site.phones.main.tel}`}>{site.phones.main.label}</a> · <a href={`tel:${site.phones.flex.tel}`}>{site.phones.flex.label}</a></span></li>
+          <li><Icon name="sms" /><a href={`sms:${site.phones.text.tel}`}>Text {site.phones.text.label}</a></li>
+          <li><Icon name="external" /><a href={site.url}>www.FlexGymnasticsAZ.com</a></li>
+        </ul>
+        <a class="btn btn--secondary" href="/contact/">Contact Us</a>
+      </div>
+      <Photo alt="Front entrance of Flex Gymnastics on Oracle Road" ratio="16/10" tone="lavender" />
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .stats-band { background: var(--purple-600); color: #fff; padding-block: 36px; }
+  .stats { list-style: none; padding: 0; margin: 0; display: grid; gap: 24px; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); text-align: center; }
+  .stats strong { display: block; font-family: var(--font-display); font-weight: 800; font-size: clamp(2rem, 1.5rem + 2vw, 3rem); color: var(--lime-400); line-height: 1; }
+  .stats span { font-weight: 700; color: rgb(255 255 255 / 88%); }
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .about-grid > :global(:last-child) { margin-top: 48px; }
+  .visit { list-style: none; padding: 0; margin: 0 0 24px; display: grid; gap: 14px; }
+  .visit li { display: grid; grid-template-columns: 24px 1fr; gap: 12px; align-items: start; font-weight: 700; }
+  .visit :global(svg) { color: var(--purple-600); margin-top: 3px; }
+</style>

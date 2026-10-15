@@ -1,0 +1,114 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import RegistrationBanner from '../components/RegistrationBanner.astro';
+import ScheduleTable from '../components/ScheduleTable.astro';
+import ContactStrip from '../components/ContactStrip.astro';
+import AgeLinks from '../components/AgeLinks.astro';
+import Icon from '../components/Icon.astro';
+import { site } from '../data/site';
+
+const levels = [
+  { name: 'Beginner', code: 'GR1', price: '$132/mo', detail: '60-minute classes, ages 6+', href: '#beginner' },
+  { name: 'Advanced Beginner', code: 'GR1.5', price: '$132/mo', detail: '60-minute classes', href: '#advanced-beginner' },
+  { name: 'Intermediate', code: 'GR2', price: '$132 / $198', detail: '$132/mo for 60-min · $198/mo for 90-min', href: '#intermediate' },
+  { name: 'Advanced', code: '', price: 'Registrar', detail: 'Placement through the Registrar', href: '#advanced' },
+];
+---
+<BaseLayout
+  title="Girls Gymnastics Classes (Ages 6+)"
+  description="Recreational girls gymnastics classes ages 6+ in Oro Valley, AZ — vault, uneven bars, balance beam, floor and TumblTrak. Beginner through Advanced from $132/month. Trial class available."
+>
+  <PageHero
+    eyebrow="Ages 6+"
+    title="Girls"
+    accent="Gymnastics"
+    lead="A fun, active pathway to confidence, self-esteem, perseverance, work ethic and overcoming fears."
+    chips={['Vault', 'Uneven Bars', 'Balance Beam', 'Floor Exercise', 'TumblTrak']}
+    photoAlt="Girl gymnast performing a skill on the balance beam"
+  >
+    <a class="btn btn--primary" href="#schedule">See Class Times</a>
+    <a class="btn btn--ghost" href={`sms:${site.phones.text.tel}`}>Ask About a Trial Class</a>
+  </PageHero>
+
+  <section class="section">
+    <div class="container split">
+      <div class="prose">
+        <p class="eyebrow">Beginner → Advanced</p>
+        <h2 class="heading-xl">Focus, fitness <strong>&amp; fun</strong></h2>
+        <p>Gymnastics instruction enhances focus, fitness, flexibility, balance, coordination and strength. Beginning and Advanced Beginning classes are 60 minutes for ages 6+. Intermediate and Advanced classes are 60–90 minutes.</p>
+        <p>Girls under 6 should enroll in <a href="/preschool-gymnastics/">Preschool</a> or <a href="/preschool-gymnastics/#kinder">Kinder</a> classes. Our recreational program is the path to our <a href="/team-development-for-girls/">development programs</a> and <a href="/girls-competitive-teams/">competitive teams</a>.</p>
+        <p><a href={site.articles.girls.url}>{site.articles.girls.title}</a></p>
+      </div>
+      <div class="card card--lime">
+        <h3>Trial class available</h3>
+        <p>Not sure where to start? Ask the Registrar about a trial class.</p>
+        <p class="mb-0"><strong>Intermediate and higher (and Team Development) require contacting the Registrar.</strong> Text <a href={`sms:${site.phones.text.tel}`}>{site.phones.text.label}</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--soft">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Levels &amp; tuition</p>
+        <h2 class="heading-xl">Find her <strong>level</strong></h2>
+      </div>
+      <ol class="levels" role="list">
+        {levels.map((l, i) => (
+          <li class="levels__item">
+            <span class="levels__step">{i + 1}</span>
+            <h3>{l.name} {l.code && <span class="levels__code">{l.code}</span>}</h3>
+            <p class="levels__price">{l.price}</p>
+            <p class="muted mb-0">{l.detail}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section" id="schedule-section">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Schedule</p>
+        <h2 class="heading-xl">Girls <strong>class times</strong></h2>
+      </div>
+      <RegistrationBanner scheduleHref={site.links.girlsSchedule} scheduleLabel="Live Girls Schedule" />
+
+      <div class="stack" style="margin-top:32px">
+        <div id="beginner"><ScheduleTable id="schedule" heading="Beginner (GR1)" programs={['girls']} levels={['Beginner']} liveLink={{ href: site.links.girlsSchedule, label: 'view the live Girls schedule' }} /></div>
+        <div id="advanced-beginner" style="margin-top:48px"><ScheduleTable id="schedule-adv-beg" heading="Advanced Beginner (GR1.5)" programs={['girls']} levels={['Advanced Beginner']} liveLink={{ href: site.links.girlsSchedule, label: 'view the live Girls schedule' }} /></div>
+        <div id="intermediate" style="margin-top:48px"><ScheduleTable id="schedule-int" heading="Intermediate (GR2)" programs={['girls']} levels={['Intermediate']} liveLink={{ href: site.links.girlsSchedule, label: 'view the live Girls schedule' }} /></div>
+      </div>
+
+      <div class="card card--dark registrar" id="advanced">
+        <Icon name="sms" size={36} />
+        <div>
+          <h3>Advanced &amp; Team Development</h3>
+          <p class="mb-0">Advanced classes aren’t listed publicly — our Registrar will help place your gymnast. Text <strong>{site.phones.text.label}</strong>.</p>
+        </div>
+        <a class="btn btn--primary" href={`sms:${site.phones.text.tel}`}>Text the Registrar</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section--tight">
+    <div class="container stack">
+      <ContactStrip />
+      <AgeLinks exclude={['girls']} />
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .levels { list-style: none; padding: 0; margin: 0; display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); counter-reset: none; }
+  .levels__item { position: relative; background: #fff; border-radius: var(--radius-lg); padding: 28px 24px 24px; border: 1px solid var(--line); box-shadow: var(--shadow); }
+  .levels__step { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; background: var(--purple-600); color: #fff; font-family: var(--font-display); font-weight: 800; margin-bottom: 14px; }
+  .levels__item h3 { font-size: 1.25rem; text-transform: uppercase; }
+  .levels__code { font-size: .75rem; padding: 2px 8px; border-radius: 6px; background: var(--purple-100); color: var(--purple-700); vertical-align: middle; }
+  .levels__price { font-family: var(--font-display); font-weight: 800; font-size: 1.6rem; color: var(--purple-600); margin: 0 0 4px; }
+  .registrar { display: grid; grid-template-columns: auto 1fr auto; gap: 20px; align-items: center; margin-top: 48px; }
+  .registrar :global(svg) { color: var(--lime-400); }
+  .registrar h3 { color: #fff; }
+  @media (max-width: 700px) { .registrar { grid-template-columns: 1fr; } }
+</style>

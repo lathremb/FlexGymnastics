@@ -1,0 +1,57 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import ContactStrip from '../components/ContactStrip.astro';
+import OwnerNote from '../components/OwnerNote.astro';
+import { site } from '../data/site';
+---
+<BaseLayout
+  title="Team Development for Boys"
+  description="Boys Team Development at Flex Gymnastics AZ: an introduction to all six men's Olympic events plus strength and flexibility. PreTeam Skills Development and PreTeam for Compulsory Team. Invitation only."
+>
+  <PageHero
+    eyebrow="Team Prep · Invitation only"
+    title="Team Development"
+    accent="for Boys"
+    lead="An introduction to all six men’s Olympic events, plus strength and flexibility training."
+    chips={['Floor', 'Pommel Horse', 'Rings', 'Vault', 'Parallel Bars', 'High Bar']}
+    photoAlt="Boys Team Prep gymnast on the high bar"
+  >
+    <a class="btn btn--primary" href={`sms:${site.phones.text.tel}`}>Request a Skills Assessment</a>
+  </PageHero>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Selection</p>
+        <h2 class="heading-xl">By <strong>invitation</strong></h2>
+        <p class="lead">Selection is based on aptitude, desire, maturity, commitment and behavior. All programs are invitation only; families may request a skills assessment.</p>
+      </div>
+      <div class="grid grid-2">
+        <div class="card">
+          <span class="badge badge--invite">By Invitation</span>
+          <h3 style="margin-top:14px">PreTeam (Advanced) Skills Development</h3>
+          <ul class="check-list">
+            <li>Boys 6+ beyond Intermediate</li>
+            <li>Two 90-minute classes per week</li>
+          </ul>
+        </div>
+        <div class="card">
+          <span class="badge badge--invite">By Invitation</span>
+          <h3 style="margin-top:14px">PreTeam for Compulsory Team</h3>
+          <ul class="check-list">
+            <li>Boys 6+ beyond Advanced</li>
+            <li>Prepares for entry levels of USA Gymnastics competition</li>
+          </ul>
+          <p class="muted mb-0">New training schedule to be determined after competitive season closes.</p>
+          <OwnerNote>Add the new PreTeam for Compulsory Team training schedule once set.</OwnerNote>
+        </div>
+      </div>
+      <p style="margin-top:32px"><a class="link-arrow" href="/boys-competitive-teams/">Next: Boys Competitive Teams</a></p>
+    </div>
+  </section>
+
+  <section class="section--tight">
+    <div class="container"><ContactStrip heading="Ask about a skills assessment." /></div>
+  </section>
+</BaseLayout>

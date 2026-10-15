@@ -1,0 +1,19 @@
+---
+// Embeds the gym's existing contact form (same form used on the current site).
+import { site } from '../data/site';
+interface Props { height?: number }
+const { height = 640 } = Astro.props;
+---
+<div class="contact-form">
+  <iframe
+    src={site.links.contactFormEmbed}
+    title="Contact Flex Gymnastics form"
+    loading="lazy"
+    style={`height:${height}px`}
+  ></iframe>
+  <p class="small muted">Form not loading? Email <a href={`mailto:${site.email}`}>{site.email}</a> or text <a href={`sms:${site.phones.text.tel}`}>{site.phones.text.label}</a>.</p>
+</div>
+
+<style>
+  .contact-form iframe { width: 100%; border: 0; border-radius: var(--radius); background: #fff; }
+</style>

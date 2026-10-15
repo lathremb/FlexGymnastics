@@ -1,0 +1,10 @@
+---
+import { site } from '../data/site';
+const words = [...site.slogans, 'Open Enrollment Year-Round', 'Girls & Boys Ages 12 Months +'];
+const loop = [...words, ...words];
+---
+<div class="marquee" aria-label={site.slogans.join(' ')} role="marquee">
+  <div class="marquee__track" aria-hidden="true">
+    {loop.map((w) => <span>{w}</span>)}
+  </div>
+</div>
